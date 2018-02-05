@@ -3,7 +3,7 @@
 		<v-tabs grow centered>
 
 	    <v-toolbar extended color="light-blue lighten-1" dark>
-	      <v-toolbar-title slot="extension" class="text-xs-center white--text display-2">Controle de Adesão</v-toolbar-title>
+	      <!-- <v-toolbar-title slot="extension" class="text-xs-center white--text display-2">Controle de Adesão</v-toolbar-title> -->
         <v-spacer></v-spacer>
         <v-btn large icon @click="$router.push('/login')">
           <v-icon large>account_box</v-icon>

@@ -92,11 +92,14 @@ export default {
       return this.$store.state.editRepresentante
     },
     edit () {
-      axios.put(`representante-list/${this.model.id_representante}/`, this.model).then(res => this.cancel())
+      axios.put(`representante-list/${this.model.id_representante}/`, this.model).then(res => {
+        this.$store.dispatch('findRepresentanteList')
+        this.cancel()
+      })
     }
   },
   created () {
-    this.model = this.$store.state.editModel
+    this.model = JSON.parse(JSON.stringify(this.$store.state.editModel))
   }
 }
 </script>

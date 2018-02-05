@@ -60,11 +60,14 @@ export default {
       return this.$store.state.editAtor
     },
     edit () {
-      axios.put(`ator-list/${this.model.id_ator}/`, this.model).then(res => this.cancel())
+      axios.put(`ator-list/${this.model.id_ator}/`, this.model).then(res => {
+        this.$store.dispatch('findAtorList')
+        this.cancel()
+      })
     }
   },
   created () {
-    this.model = this.$store.state.editModel
+    this.model = JSON.parse(JSON.stringify(this.$store.state.editModel))
   }
 }
 </script>

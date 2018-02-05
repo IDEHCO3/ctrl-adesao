@@ -10,7 +10,7 @@ import('../node_modules/vuetify/dist/vuetify.min.css')
 
 Vue.config.productionTip = false
 Vue.use(Vuetify)
-axios.defaults.baseURL = 'http://172.30.11.26:8001/adesao-list/'
+axios.defaults.baseURL = 'http://172.30.10.86/controle-adesao-list/'
 
 /* eslint-disable no-new */
 new Vue({

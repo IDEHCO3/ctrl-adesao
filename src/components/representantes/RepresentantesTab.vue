@@ -17,8 +17,8 @@
             <div slot="header"> {{ props.item.nome }} </div>
             <!-- Representantes -->
             <v-expansion-panel inset>
-              <v-expansion-panel-content class="pb-2 mb-1 light-blue lighten-4" v-for="(representante, i) in props.item.representantes" :key="i">
-                <div slot="header">{{findRepresentante(representante).nome}}
+              <v-expansion-panel-content class="pb-2 mb-1 light-blue lighten-4" v-for="(representante, i) in findRepresentantes(props.item.id_ator)" :key="i">
+                <div slot="header">{{ representante.nome }}
                   <v-btn icon flat small @click="editRepresentante(representante)">
                     <v-icon light>edit</v-icon>
                   </v-btn>
@@ -27,26 +27,26 @@
                   <table>
                     <tr>
                       <th>Email</th>
-                      <td>{{findRepresentante(representante).email1}}</td>
+                      <td>{{ representante.email1 }}</td>
                     </tr>
                     <tr>
                       <th>Contatos</th>
-                      <td>{{findRepresentante(representante).telefone1}}<td>
-                      <td>{{findRepresentante(representante).telefone2}}</td>
-                      <td>{{findRepresentante(representante).celular_telefone3}}</td>
+                      <td>{{ representante.telefone1 }}<td>
+                      <td>{{ representante.telefone2 }}</td>
+                      <td>{{ representante.celular_telefone3 }}</td>
                     </tr>
 
                     <tr>
                       <th>Função/Cargo</th>
-                      <td v-if="findRepresentante(representante).funcao_cargo.length">
-                        {{findRepresentante(representante).funcao_cargo}}
+                      <td v-if="representante.funcao_cargo">
+                        {{ representante.funcao_cargo }}
                       </td>
                       <td v-else>Não informado</td>
                     </tr>
                     <tr>
                       <th>Area/Setor</th>
-                      <td v-if="findRepresentante(representante).area_setor.length">
-                        {{findRepresentante(representante).area_setor}}
+                      <td v-if="representante.area_setor">
+                        {{ representante.area_setor }}
                       </td>
                       <td v-else>Não informado</td>
                     </tr>
@@ -73,7 +73,7 @@ import RepresentanteEdit from './RepresentanteEdit'
 
 export default {
   name: 'RepresentantesTab',
-  components: {RepresentanteEdit},
+  components: { RepresentanteEdit },
   data () {
     return {
       search: '',
@@ -84,12 +84,14 @@ export default {
   methods: {
     editRepresentante (rep) {
       this.$store.state.editRepresentante = true
-      this.$store.state.editModel = this.findRepresentante(rep)
+      this.$store.state.editModel = rep
     },
-    findRepresentante (linkedData) {
-      const representanteId = parseInt(linkedData.split('/').reverse()[1])
-      const rep = this.representanteList.find(rep => rep.id_representante === representanteId)
-      return rep
+    findRepresentantes (idAtor) {
+      const representantes = this.representanteList.filter(rep => this.urlToId(rep.ator) === idAtor)
+      return representantes
+    },
+    urlToId (linkedData) {
+      return parseInt(linkedData.split('/').reverse()[1])
     },
     sortByNome (items) {
       return items.sort((a, b) => a.nome > b.nome ? 1 : -1)
