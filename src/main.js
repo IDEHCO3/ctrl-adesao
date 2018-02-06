@@ -3,7 +3,7 @@
 import App from './App'
 import axios from 'axios'
 import router from './router'
-import store from './core'
+import store from './store'
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 import('../node_modules/vuetify/dist/vuetify.min.css')
