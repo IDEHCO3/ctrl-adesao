@@ -12,7 +12,7 @@
     :rows-per-page-items="rows" :custom-sort="sortByNome">
 
       <template slot="items" slot-scope="props">
-        <td class="text-xs-left"> {{ findNome(props.item.id_ator) }} </td>
+        <td class="text-xs-left"> {{ filterNome(props.item.ator) }} </td>
         <td class="text-xs-center">{{ props.item.tem_metadados }}</td>
         <td class="text-xs-center">{{ props.item.tem_geoservicos }}</td>
         <td class="text-xs-center">{{ props.item.tem_download }}</td>
@@ -47,7 +47,7 @@ export default {
     }
   },
   methods: {
-    findNome (linkedData) {
+    filterNome (linkedData) {
       const id = parseInt(linkedData.split('/').reverse()[1])
       const nome = this.atorList.find(ator => ator.id_ator === id).nome
       return nome
