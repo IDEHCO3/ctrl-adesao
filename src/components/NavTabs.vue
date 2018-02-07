@@ -3,7 +3,9 @@
 		<v-tabs grow centered>
 
 	    <v-toolbar extended color="light-blue lighten-1" dark>
-	      <!-- <v-toolbar-title slot="extension" class="text-xs-center white--text display-2">Controle de Adesão</v-toolbar-title> -->
+	     <v-btn large icon @click="downloadPdf">
+          <v-icon large>description</v-icon>
+        </v-btn>
         <v-spacer></v-spacer>
         <v-btn large icon @click="$router.push('/login')">
           <v-icon large>account_box</v-icon>
@@ -45,6 +47,8 @@
 import AtoresTab from './atores/AtoresTab'
 import PublicacaoGeoespacialTab from './publicacao-geoespacial/PublicacaoGeoespacialTab'
 import RepresentantesTab from './representantes/RepresentantesTab'
+import generatorPdf from '../getPDF'
+
 export default {
   name: 'NavTabs',
   components: {
@@ -59,6 +63,9 @@ export default {
       ],
       text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
     }
+  },
+  methods: {
+    downloadPdf () { generatorPdf() }
   }
 }
 </script>
