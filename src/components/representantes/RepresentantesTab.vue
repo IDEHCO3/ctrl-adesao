@@ -7,7 +7,7 @@
       <v-spacer></v-spacer>
       <v-text-field append-icon="search" label="Procurar" single-line hide-details v-model="search"></v-text-field>
     </v-card-title>
-    <v-data-table :items="atorList" :search="search" 
+    <v-data-table :items="searchedList"
     :pagination.sync="pagination" hide-actions class="elevation-1" 
     :rows-per-page-items="rows" :custom-sort="sortByNome">
 
@@ -17,6 +17,9 @@
             <div slot="header"> {{ props.item.nome }} </div>
             <!-- Representantes -->
             <v-expansion-panel inset>
+              <div class="error--text" v-if="findRepresentantes(props.item.id_ator) < 1">
+                Nenhum representante registrado
+              </div>
               <v-expansion-panel-content class="pb-2 mb-1 light-blue lighten-4" v-for="(representante, i) in findRepresentantes(props.item.id_ator)" :key="i">
                 <div slot="header">{{ representante.nome }}
                   <v-btn icon flat small @click="editRepresentante(representante)">
@@ -99,8 +102,14 @@ export default {
   },
   computed: {
     ...mapGetters({atorList: 'getAtorList', representanteList: 'getRepresentantesList'}),
+    searchedList (search) {
+      const atores = this.atorList
+      const regexp = new RegExp(this.search, 'i')
+      const list = atores.filter(ator => ator.nome.match(regexp))
+      return list
+    },
     pages () {
-      return this.pagination.rowsPerPage ? Math.ceil(this.atorList.length / this.pagination.rowsPerPage) : 0
+      return this.pagination.rowsPerPage ? Math.ceil(this.searchedList.length / this.pagination.rowsPerPage) : 0
     }
   }
 }

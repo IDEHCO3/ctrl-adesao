@@ -7,7 +7,7 @@
       <v-spacer></v-spacer>
       <v-text-field append-icon="search" label="Procurar" single-line hide-details v-model="search"></v-text-field>
     </v-card-title>
-    <v-data-table :headers="headers" :items="publicacaoGeoespacialList" :search="search" 
+    <v-data-table :headers="headers" :items="searchedList"
     :pagination.sync="pagination" hide-actions class="elevation-1" 
     :rows-per-page-items="rows" :custom-sort="sortByNome">
 
@@ -58,8 +58,13 @@ export default {
   },
   computed: {
     ...mapGetters({atorList: 'getAtorList', publicacaoGeoespacialList: 'getPublicacaoGeoespacialList'}),
+    searchedList (search) {
+      const publicacaoGeoespacial = this.publicacaoGeoespacialList
+      const list = publicacaoGeoespacial.filter(publicacao => this.filterNome(publicacao.ator).match(new RegExp(this.search, 'i')))
+      return list
+    },
     pages () {
-      return this.pagination.rowsPerPage ? Math.ceil(this.publicacaoGeoespacialList.length / this.pagination.rowsPerPage) : 0
+      return this.pagination.rowsPerPage ? Math.ceil(this.searchedList.length / this.pagination.rowsPerPage) : 0
     }
   }
 }
