@@ -4,9 +4,36 @@
     <v-card height="100%">
     <v-card-title>
       ATOR
+
+      <v-btn large icon @click="downloadPDF(searchedList)" color="cyan--text">
+        <v-icon large>description</v-icon>
+      </v-btn>
       <v-spacer></v-spacer>
       <v-text-field append-icon="search" label="Procurar" single-line hide-details v-model="search"></v-text-field>
     </v-card-title>
+      <v-flex xs6 class="filterselect">
+        <v-select
+          class="mr-2"
+          :items="status"
+          v-model="statusAdesao"
+          label="Status de Adesão"
+          item-value="text"
+        ></v-select>
+        <v-select
+          class="mr-2"
+          :items="[{text: ''},{text: 'Sim'},{text: 'Não'},{text: 'Não Informado'}]"
+          v-model="capacitacao"
+          label="Capacitação"
+          item-value="text"
+        ></v-select>
+        <v-select
+          class="mr-2"
+          :items="[{text: ''},{text: 'NP'},{text: 'NC'},{text: 'Não Informado'}]"
+          v-model="modalidade"
+          label="Modalidade"
+          item-value="text"
+        ></v-select>
+      </v-flex>
     <v-data-table :headers="headers" :items="searchedList"
     :pagination.sync="pagination" hide-actions class="elevation-1" 
     :rows-per-page-items="rows" :custom-sort="sortByNome">
@@ -50,6 +77,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import pdfGenerator from '@/getPDF'
 import AtorEdit from './AtorEdit'
 
 export default {
@@ -59,7 +87,16 @@ export default {
     return {
       search: '',
       pagination: {},
-      rows: [5],
+      rows: [8],
+      statusAdesao: '',
+      capacitacao: '',
+      modalidade: '',
+      status: [
+        {text: ''},
+        {text: 'Implementado'},
+        {text: 'interessado'},
+        {text: 'Processo de Adesão'}
+      ],
       headers: [
         {text: 'NOME: ', align: 'left', sortable: false},
         {text: 'Status da Adesão', sortable: false, align: 'center'},
@@ -69,9 +106,22 @@ export default {
     }
   },
   methods: {
+    downloadPDF (list) {
+      pdfGenerator(list)
+    },
     editAtor (ator) {
       this.$store.state.editAtor = true
       this.$store.state.editModel = ator
+    },
+    filters (ator, filter) {
+      if (ator === null || filter === null) {
+        return true
+      }
+      if (ator.toLowerCase() === filter.toLowerCase()) {
+        return true
+      } else {
+        return false
+      }
     },
     sortByNome (items) {
       return items.sort((a, b) => a.nome > b.nome ? 1 : -1)
@@ -81,8 +131,16 @@ export default {
     ...mapGetters({atorList: 'getAtorList'}),
     searchedList (search) {
       const atores = this.atorList
-      const list = atores.filter(ator => ator.nome.match(new RegExp(this.search, 'i')))
-      return list
+      let filters = []
+      filters['statusAdesao'] = this.statusAdesao === '' ? null : this.statusAdesao
+      filters['capacitacao'] = this.capacitacao === '' ? null : this.capacitacao
+      filters['modalidade'] = this.modalidade === '' ? null : this.modalidade
+      let list = atores.filter(ator => ator.nome.match(new RegExp(this.search, 'i')))
+      return list.filter(ator =>
+        this.filters(ator.status_adesao, filters.statusAdesao) &&
+        this.filters(ator.capacitacao, filters.capacitacao) &&
+        this.filters(ator.modalidade, filters.modalidade)
+        )
     },
     pages () {
       return this.pagination.rowsPerPage ? Math.ceil(this.searchedList.length / this.pagination.rowsPerPage) : 0
@@ -92,5 +150,8 @@ export default {
 </script>
 
 <style scoped>
-
+.filterselect {
+  display: inline-flex !important;
+  width: 50% !important;
+}
 </style>

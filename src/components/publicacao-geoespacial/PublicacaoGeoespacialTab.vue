@@ -7,6 +7,36 @@
       <v-spacer></v-spacer>
       <v-text-field append-icon="search" label="Procurar" single-line hide-details v-model="search"></v-text-field>
     </v-card-title>
+      <v-flex xs6 class="filterselect">
+        <v-select
+          class="mr-2"
+          :items="filter"
+          v-model="metadados"
+          label="Metadados"
+          item-value="text"
+        ></v-select>
+        <v-select
+          class="mr-2"
+          :items="filter"
+          v-model="geoservicos"
+          label="Geoserviços"
+          item-value="text"
+        ></v-select>
+        <v-select
+          class="mr-2"
+          :items="filter"
+          v-model="download"
+          label="Download"
+          item-value="text"
+        ></v-select>
+        <v-select
+          class="mr-2"
+          :items="filter"
+          v-model="vinde"
+          label="VINDE"
+          item-value="text"
+        ></v-select>
+      </v-flex>
     <v-data-table :headers="headers" :items="searchedList"
     :pagination.sync="pagination" hide-actions class="elevation-1" 
     :rows-per-page-items="rows" :custom-sort="sortByNome">
@@ -36,7 +66,17 @@ export default {
     return {
       search: '',
       pagination: {},
-      rows: [10],
+      rows: [12],
+      metadados: '',
+      geoservicos: '',
+      download: '',
+      vinde: '',
+      filter: [
+        {text: ''},
+        {text: 'Sim'},
+        {text: 'Não'},
+        {text: 'Não informado'}
+      ],
       headers: [
         {text: 'NOME: ', align: 'left', sortable: false},
         {text: 'Metadados', sortable: false, align: 'center'},
@@ -47,21 +87,49 @@ export default {
     }
   },
   methods: {
+    filters (publicacao, filter) {
+      if (publicacao === null || filter === null) {
+        return true
+      }
+      if (publicacao.toLowerCase() === filter.toLowerCase()) {
+        return true
+      } else {
+        return false
+      }
+    },
     filterNome (linkedData) {
       const id = parseInt(linkedData.split('/').reverse()[1])
       const nome = this.atorList.find(ator => ator.id_ator === id).nome
-      return nome
+      if (nome) {
+        return nome
+      }
     },
     sortByNome (items) {
-      return items.sort((a, b) => a.nome > b.nome ? 1 : -1)
+      return items.sort((a, b) => {
+        if (a.nome && b.nome) {
+          return a.nome > b.nome ? 1 : -1
+        } else {
+          return 1
+        }
+      })
     }
   },
   computed: {
     ...mapGetters({atorList: 'getAtorList', publicacaoGeoespacialList: 'getPublicacaoGeoespacialList'}),
     searchedList (search) {
       const publicacaoGeoespacial = this.publicacaoGeoespacialList
-      const list = publicacaoGeoespacial.filter(publicacao => this.filterNome(publicacao.ator).match(new RegExp(this.search, 'i')))
-      return list
+      let filters = []
+      filters['metadados'] = this.metadados === '' ? null : this.metadados
+      filters['geoservicos'] = this.geoservicos === '' ? null : this.geoservicos
+      filters['download'] = this.download === '' ? null : this.download
+      filters['vinde'] = this.vinde === '' ? null : this.vinde
+      let list = publicacaoGeoespacial.filter(publicacao => this.filterNome(publicacao.ator).match(new RegExp(this.search, 'i')))
+      return list.filter(publicacao =>
+        this.filters(publicacao.tem_metadados, filters.metadados) &&
+        this.filters(publicacao.tem_geoservicos, filters.geoservicos) &&
+        this.filters(publicacao.tem_download, filters.download) &&
+        this.filters(publicacao.tem_vinde, filters.vinde)
+        )
     },
     pages () {
       return this.pagination.rowsPerPage ? Math.ceil(this.searchedList.length / this.pagination.rowsPerPage) : 0
@@ -71,5 +139,8 @@ export default {
 </script>
 
 <style scoped>
-
+.filterselect {
+  display: inline-flex !important;
+  width: 50% !important;
+}
 </style>

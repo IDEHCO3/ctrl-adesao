@@ -1,12 +1,11 @@
 import JsPDF from 'jspdf'
 import 'jspdf-autotable'
-import store from './store'
 
-export default function controleDeAdesaoPDF () {
+export default function controleDeAdesaoPDF (list) {
   const doc = new JsPDF()
   doc.text('Controle de Adesão', 80, 15)
 
-  store.state.ator_list.map((ator, index) => {
+  list.map((ator, index) => {
     if (index === 0) {
       doc.autoTable([{title: ator.nome, dataKey: 'atorNome'}], [],
         { headerStyles: {fillColor: [10, 100, 255]}, styles: {halign: 'center'}, theme: 'grid', startY: 25 })
