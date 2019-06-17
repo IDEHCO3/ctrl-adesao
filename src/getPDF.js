@@ -3,17 +3,17 @@ import 'jspdf-autotable'
 
 export default function controleDeAdesaoPDF (list) {
   const doc = new JsPDF()
-  doc.text('Controle de Adesão', 80, 15)
+  doc.text('Controle de Adesão - lista de Atores', 70, 15)
 
   list.map((ator, index) => {
     if (index === 0) {
       doc.autoTable([{title: ator.nome, dataKey: 'atorNome'}], [],
-        { headerStyles: {fillColor: [10, 100, 255]}, styles: {halign: 'center'}, theme: 'grid', startY: 25 })
-      doc.autoTable(getColumns(), getData(ator), { headerStyles: {fillColor: [10, 200, 255]}, theme: 'grid', startY: doc.autoTable.previous.finalY })
+        { headerStyles: {fillColor: [0, 0, 0]}, styles: {halign: 'center'}, theme: 'grid', startY: 25 })
+      doc.autoTable(getColumns(), getData(ator), { headerStyles: {fillColor: [105, 105, 105]}, theme: 'grid', startY: doc.autoTable.previous.finalY })
     } else {
       doc.autoTable([{title: ator.nome, dataKey: 'atorNome'}], [],
-        { headerStyles: {fillColor: [10, 100, 255]}, styles: {halign: 'center'}, theme: 'grid', startY: doc.autoTable.previous.finalY + 10 })
-      doc.autoTable(getColumns(), getData(ator), { headerStyles: {fillColor: [10, 200, 255]}, theme: 'grid', startY: doc.autoTable.previous.finalY })
+        { headerStyles: {fillColor: [0, 0, 0]}, styles: {halign: 'center'}, theme: 'grid', startY: doc.autoTable.previous.finalY + 10 })
+      doc.autoTable(getColumns(), getData(ator), { headerStyles: {fillColor: [105, 105, 105]}, theme: 'grid', startY: doc.autoTable.previous.finalY })
     }
   })
 

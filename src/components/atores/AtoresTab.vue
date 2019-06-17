@@ -1,76 +1,97 @@
 <template>
   <v-flex xs12 md10 offset-md1>
     <ator-edit v-if="this.$store.state.editAtor"></ator-edit>
+    <v-dialog v-model="addAtorModal" persistent max-width="800px">
+      <AddAtor @close="addAtorModal = false"/>
+    </v-dialog>
+
     <v-card height="100%">
-    <v-card-title>
-      ATOR
-
-      <v-btn large icon @click="downloadPDF(searchedList)" color="cyan--text">
-        <v-icon large>description</v-icon>
-      </v-btn>
-      <v-spacer></v-spacer>
-      <v-text-field append-icon="search" label="Procurar" single-line hide-details v-model="search"></v-text-field>
-    </v-card-title>
-      <v-flex xs6 class="filterselect">
-        <v-select
-          class="mr-2"
-          :items="status"
-          v-model="statusAdesao"
-          label="Status de Adesão"
-          item-value="text"
-        ></v-select>
-        <v-select
-          class="mr-2"
-          :items="[{text: ''},{text: 'Sim'},{text: 'Não'},{text: 'Não Informado'}]"
-          v-model="capacitacao"
-          label="Capacitação"
-          item-value="text"
-        ></v-select>
-        <v-select
-          class="mr-2"
-          :items="[{text: ''},{text: 'NP'},{text: 'NC'},{text: 'Não Informado'}]"
-          v-model="modalidade"
-          label="Modalidade"
-          item-value="text"
-        ></v-select>
-      </v-flex>
-    <v-data-table :headers="headers" :items="searchedList"
-    :pagination.sync="pagination" hide-actions class="elevation-1" 
-    :rows-per-page-items="rows" :custom-sort="sortByNome">
-
-      <template slot="items" slot-scope="props">
-        <td class="text-xs-left"> {{ props.item.nome }}
-          <v-btn flat icon @click.native.stop="editAtor(props.item)">
-            <v-icon>edit</v-icon>
+      <v-card-title>
+        <v-flex center>
+          <v-btn outline @click="downloadPDF(searchedList)" color="primary">
+            GERAR PDF
+            <v-icon color="primary">description</v-icon>
           </v-btn>
-        </td>
-        <td class="text-xs-center">{{ props.item.status_adesao }}</td>
-        <td class="text-xs-center">{{ props.item.capacitacao }}</td>
-        <td class="text-xs-center">{{ props.item.modalidade }}</td>
+          <br>
+          <v-btn outline @click="addAtorModal = true" color="primary">
+            Novo Ator
+            <v-icon ml-1 color="primary">add</v-icon>
+          </v-btn>
+        </v-flex>
 
-        <v-expansion-panel expand popout>
+        <v-flex xs6 pt-4 class="filterselect"><!-- Filtros de busca --->
+          <v-select
+            class="mr-2"
+            :items="status"
+            v-model="statusAdesao"
+            label="Status de Adesão"
+            item-value="text"
+          ></v-select>
+          <v-select
+            class="mr-2"
+            :items="[{text: ''},{text: 'Sim'},{text: 'Não'},{text: 'Não Informado'}]"
+            v-model="capacitacao"
+            label="Capacitação"
+            item-value="text"
+          ></v-select>
+          <v-select
+            class="mr-2"
+            :items="[{text: ''},{text: 'NP'},{text: 'NC'},{text: 'Não Informado'}]"
+            v-model="modalidade"
+            label="Modalidade"
+            item-value="text"
+          ></v-select>
+        </v-flex>
 
-          <v-expansion-panel-content >
-            <div slot="header">DOC Solicitação</div>
-            <v-card>
-              <v-card-text class="grey lighten-3">{{ props.item.documento_solicitacao }}</v-card-text>
-            </v-card>
-          </v-expansion-panel-content>
+        <v-flex ma-0 xs12 sm6 md3>
+          <v-text-field append-icon="search" label="Procurar" single-line hide-details v-model="search"></v-text-field>
+        </v-flex>
+      </v-card-title>
 
-          <v-expansion-panel-content>
-            <div slot="header">Observação</div>
-            <v-card>
-              <v-card-text class="grey lighten-3">{{ props.item.observacao }}</v-card-text>
-            </v-card>
-          </v-expansion-panel-content>
+      <v-data-table  :headers="headers" :items="searchedList"
+      :pagination.sync="pagination" hide-actions class="elevation-1"
+      :rows-per-page-items="rows" :custom-sort="sortByNome">
 
-        </v-expansion-panel>
-      </template>
+        <template slot="items" slot-scope="props">
+          <td class="text-xs-left">
+            {{ props.item.nome }}
+            <v-flex right>
+              <v-btn icon class="ma-0" @click.native.stop="editAtor(props.item)">
+                <v-icon>edit</v-icon>
+              </v-btn>
+              <v-btn icon class="ma-0" @click.native.stop="deleteAtor(props.item)">
+                <v-icon color="red darken-3">delete</v-icon>
+              </v-btn>
+            </v-flex>
+          </td>
+          <td class="text-xs-center">{{ props.item.status_adesao }}</td>
+          <td class="text-xs-center">{{ props.item.capacitacao }}</td>
+          <td class="text-xs-center">{{ props.item.modalidade }}</td>
 
-    </v-data-table>
-    <div class="text-xs-center pt-2">
-      <v-pagination v-model="pagination.page" :length="pages" :total-visible="12"></v-pagination>
-    </div>
+          <v-expansion-panel expand popout>
+            <v-expansion-panel-content >
+              <div slot="header">DOC Solicitação</div>
+              <v-card>
+                <v-card-text class="grey lighten-3">{{ props.item.documento_solicitacao }}</v-card-text>
+              </v-card>
+            </v-expansion-panel-content>
+
+            <v-expansion-panel-content>
+              <div slot="header">Observação</div>
+              <v-card>
+                <v-card-text class="grey lighten-3">{{ props.item.observacao }}</v-card-text>
+              </v-card>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </template>
+      </v-data-table>
+      
+      <div class="text-xs-center pt-2">
+        <v-pagination color="primary" v-model="pagination.page" :length="pages" :total-visible="10"></v-pagination>
+      </div>
+      <v-dialog v-model="deleteDialog" persistent max-width="350">
+        <delete-modal @close="deleteDialog = false" ref="deleteAtor"/>
+      </v-dialog>
     </v-card>
   </v-flex>
 </template>
@@ -78,13 +99,17 @@
 <script>
 import { mapGetters } from 'vuex'
 import pdfGenerator from '@/getPDF'
+import AddAtor from './AddAtor'
 import AtorEdit from './AtorEdit'
+import DeleteModal from '../DeleteModal'
 
 export default {
   name: 'AtoresTab',
-  components: {AtorEdit},
+  components: {AddAtor, AtorEdit, DeleteModal},
   data () {
     return {
+      addAtorModal: false,
+      deleteDialog: false,
       search: '',
       pagination: {},
       rows: [8],
@@ -94,11 +119,11 @@ export default {
       status: [
         {text: ''},
         {text: 'Implementado'},
-        {text: 'interessado'},
+        {text: 'Interessado'},
         {text: 'Processo de Adesão'}
       ],
       headers: [
-        {text: 'NOME: ', align: 'left', sortable: false},
+        {text: 'Nome', align: 'center', sortable: false},
         {text: 'Status da Adesão', sortable: false, align: 'center'},
         {text: 'Capacitação', sortable: false, align: 'center'},
         {text: 'Modalidade', sortable: false, align: 'center'}
@@ -112,6 +137,11 @@ export default {
     editAtor (ator) {
       this.$store.state.editAtor = true
       this.$store.state.editModel = ator
+    },
+    deleteAtor (ator) {
+      this.$refs.deleteAtor.name = ator.nome
+      this.$refs.deleteAtor.url = `ator-list/${ator.id_ator}/`
+      this.deleteDialog = true
     },
     filters (ator, filter) {
       if (ator === null || filter === null) {

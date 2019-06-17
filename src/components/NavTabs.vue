@@ -1,19 +1,14 @@
 <template>
   <v-app>
-		<v-tabs grow centered>
-
-	    <v-toolbar extended color="light-blue lighten-1" dark>
-        <v-spacer></v-spacer>
-        <v-btn large icon @click="$router.push('/login')">
-          <v-icon large>account_box</v-icon>
-        </v-btn>
-	    </v-toolbar>
-
-	    <v-tabs-bar color="light-blue lighten-1" dark>
-	      <v-tabs-slider color="yellow"></v-tabs-slider>
+		<v-tabs grow centered>	  
+	    <v-tabs-bar color="primary" dark>
+	      <v-tabs-slider color="grey lighten-1"/>
 	      <v-tabs-item v-for="tab in tabs" :key="tab.nome" :href="'#' + tab.nome">
 	        {{ tab.nome }}
 	      </v-tabs-item>
+        <v-btn  icon @click="$router.push('/login')">
+          <v-icon large>account_box</v-icon>
+        </v-btn>
 	    </v-tabs-bar>
 
 	    <v-tabs-items>

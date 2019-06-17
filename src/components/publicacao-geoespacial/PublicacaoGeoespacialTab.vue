@@ -1,13 +1,16 @@
 <template>
   <v-flex xs12 md10 offset-md1>
-    <representante-edit v-if="this.$store.state.editRepresentante"></representante-edit>
+    <!--<representante-edit v-if="this.$store.state.editRepresentante"></representante-edit> -->
     <v-card height="100%">
     <v-card-title>
-      REPRESENTANTES
-      <v-spacer></v-spacer>
-      <v-text-field append-icon="search" label="Procurar" single-line hide-details v-model="search"></v-text-field>
-    </v-card-title>
-      <v-flex xs6 class="filterselect">
+      <v-flex center>
+        <v-btn outline @click="addPublicacaoGeoespacial" color="primary">
+          Nova Publicação
+          <v-icon color="primary">add</v-icon>
+        </v-btn>
+      </v-flex>
+
+      <v-flex xs6 pt-4 class="filterselect">
         <v-select
           class="mr-2"
           :items="filter"
@@ -37,12 +40,18 @@
           item-value="text"
         ></v-select>
       </v-flex>
+
+      <v-flex ma-0 xs12 sm6 md3>
+        <v-text-field append-icon="search" label="Procurar" single-line hide-details v-model="search"></v-text-field>
+      </v-flex>
+    </v-card-title>
+
     <v-data-table :headers="headers" :items="searchedList"
-    :pagination.sync="pagination" hide-actions class="elevation-1" 
+    :pagination.sync="pagination" hide-actions class="elevation-1"
     :rows-per-page-items="rows" :custom-sort="sortByNome">
 
       <template slot="items" slot-scope="props">
-        <td class="text-xs-left"> {{ filterNome(props.item.ator) }} </td>
+        <td class="text-xs-left"> {{ filterNome(props.item.id_ator) }} </td>
         <td class="text-xs-center">{{ props.item.tem_metadados }}</td>
         <td class="text-xs-center">{{ props.item.tem_geoservicos }}</td>
         <td class="text-xs-center">{{ props.item.tem_download }}</td>
@@ -59,9 +68,11 @@
 
 <script>
 import { mapGetters } from 'vuex'
+// import RepresentanteEdit from '../representantes/RepresentanteEdit' // gambiarra louca
 
 export default {
-  name: '',
+  name: 'publicacaoGeoespacialTab',
+  // components: {RepresentanteEdit},
   data () {
     return {
       search: '',
@@ -78,7 +89,7 @@ export default {
         {text: 'Não informado'}
       ],
       headers: [
-        {text: 'NOME: ', align: 'left', sortable: false},
+        {text: 'Nome', align: 'center', sortable: false},
         {text: 'Metadados', sortable: false, align: 'center'},
         {text: 'Geoserviços', sortable: false, align: 'center'},
         {text: 'Download', sortable: false, align: 'center'},
@@ -87,6 +98,9 @@ export default {
     }
   },
   methods: {
+    addPublicacaoGeoespacial () {
+      console.log('s')
+    },
     filters (publicacao, filter) {
       if (publicacao === null || filter === null) {
         return true
@@ -98,7 +112,7 @@ export default {
       }
     },
     filterNome (linkedData) {
-      const id = parseInt(linkedData.split('/').reverse()[1])
+      const id = parseInt(linkedData.split('/').reverse()[0]) // programação orientada a gambiarra
       const nome = this.atorList.find(ator => ator.id_ator === id).nome
       if (nome) {
         return nome
@@ -123,7 +137,7 @@ export default {
       filters['geoservicos'] = this.geoservicos === '' ? null : this.geoservicos
       filters['download'] = this.download === '' ? null : this.download
       filters['vinde'] = this.vinde === '' ? null : this.vinde
-      let list = publicacaoGeoespacial.filter(publicacao => this.filterNome(publicacao.ator).match(new RegExp(this.search, 'i')))
+      let list = publicacaoGeoespacial.filter(publicacao => this.filterNome(publicacao.id_ator).match(new RegExp(this.search, 'i')))
       return list.filter(publicacao =>
         this.filters(publicacao.tem_metadados, filters.metadados) &&
         this.filters(publicacao.tem_geoservicos, filters.geoservicos) &&
