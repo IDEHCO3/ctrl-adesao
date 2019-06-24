@@ -16,18 +16,18 @@
         <v-layout row wrap>
 
           <v-flex xs12>
-            <v-text-field label="Nome do ator" v-model="ator.nome"></v-text-field>
+            <v-text-field label="Nome do ator" v-model="ator.nome" required/>
           </v-flex>
 
           <v-flex xs12 sm4>
-            <v-select label="Status Adesão" v-model="ator.status_adesao" :items="['Implementado', 'Interessado', 'Processo de Adesão']"></v-select>
-            <v-select label="Capacitação" v-model="ator.capacitacao" :items="['Sim', 'Não', 'Não Informado']"></v-select>
-            <v-select label="Modalidade" v-model="ator.modalidade" :items="['NP', 'NC', 'Não Informado']"></v-select>
+            <v-select label="Status Adesão" required v-model="ator.status_adesao" :items="['Implementado', 'Interessado', 'Processo de Adesão']"/>
+            <v-select label="Capacitação" v-model="ator.capacitacao" :items="['Sim', 'Não', 'Não Informado']"/>
+            <v-select label="Modalidade" v-model="ator.modalidade" :items="['NP', 'NC', 'Não Informado']"/>
           </v-flex>
 
           <v-flex xs12 sm7 offset-sm1>
-            <v-text-field label="Observação" multi-line v-model="ator.observacao"></v-text-field>
-            <v-text-field label="DOC Solicitação" multi-line v-model="ator.documento_solicitacao"></v-text-field>
+            <v-text-field label="Observação" multi-line v-model="ator.observacao"/>
+            <v-text-field label="DOC Solicitação" multi-line v-model="ator.documento_solicitacao"/>
           </v-flex>
         </v-layout>
 
@@ -66,7 +66,7 @@ export default {
   methods: {
     async addAtor () {
       try {
-        await axios.post('ator-list/', this.ator, {crossDomain: true})
+        await axios.post('ator-list/', this.ator)
         this.$store.dispatch('findAtorList')
         this.close()
       } catch (error) {
@@ -75,9 +75,7 @@ export default {
     },
     close () {
       this.clearFields()
-      console.log('campos limpos')
       this.$emit('close')
-      console.log('fechado')
     },
     clearFields () {
       this.ator = {

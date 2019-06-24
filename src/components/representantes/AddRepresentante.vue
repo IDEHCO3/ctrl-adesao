@@ -33,7 +33,7 @@
             <v-text-field label="Função/Cargo" v-model="representante.funcao_cargo"></v-text-field>
           </v-flex>
           <v-flex ml-2 >
-            <v-select label="Gestor" v-model="representante.gestor" :items="[{text: 'Não'},{text: 'Sim'},{text: ''}]" item-value="text"></v-select>
+            <!--<v-select label="Gestor" v-model="representante.gestor" :items="['Não', 'Sim', 'Não Informado']" item-value="text"/>-->
           </v-flex>
           <v-flex xs11 sm5 md3 >
             <v-text-field
@@ -103,7 +103,6 @@ export default {
         .then(response => { console.log(response) })
         .catch(error => { console.log(error.response) })
         this.$store.dispatch('findRepresentanteList')
-        this.close()
       } catch (error) {
         console.log(error)
       }
@@ -121,8 +120,8 @@ export default {
         celular_telefone3: '',
         area_setor: '',
         funcao_cargo: '',
-        id_ator: '',
-        gestor: ''
+        id_ator: ''
+        // gestor: ''
       }
     }
   }

@@ -15,18 +15,18 @@
           <v-container fluid>
             <v-layout row wrap>
               <v-flex xs12>
-                <v-text-field label="Ator" v-model="model.nome"></v-text-field>
+                <v-text-field label="Ator" required v-model="model.nome"/>
               </v-flex>
 
               <v-flex xs12 sm4>
-                <v-text-field label="Status Adesão" v-model="model.status_adesao"></v-text-field>
-                <v-text-field label="Capacitação" v-model="model.capacitacao"></v-text-field>
-                <v-text-field label="Modalidade" v-model="model.modalidade"></v-text-field>
+                <v-select label="Status Adesão" required v-model="model.status_adesao" :items="['Implementado', 'Interessado', 'Processo de Adesão']"/>
+                <v-select label="Capacitação" v-model="model.capacitacao" :items="['Sim', 'Não', 'Não Informado']"/>
+                <v-select label="Modalidade" v-model="model.modalidade" :items="['NP', 'NC', 'Não Informado']"/>
               </v-flex>
 
               <v-flex xs12 sm7 offset-sm1>
-                <v-text-field label="Observação" multi-line v-model="model.observacao"></v-text-field>
-                <v-text-field label="DOC Solicitação" multi-line v-model="model.documento_solicitacao"></v-text-field>
+                <v-text-field label="Observação" multi-line v-model="model.observacao"/>
+                <v-text-field label="DOC Solicitação" multi-line v-model="model.documento_solicitacao"/>
               </v-flex>
             </v-layout>
 
@@ -56,7 +56,8 @@ export default {
   data () {
     return {
       model: {},
-      prevModel: {}
+      prevModel: {},
+      etag: ''
     }
   },
   methods: {
@@ -68,15 +69,12 @@ export default {
       return this.$store.state.editAtor
     },
     edit () {
-      let axiosConfig = {
+      let headers = {
         headers: {
-          'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Headers': 'Authorization',
-          'Content-Type': 'application/json'
+          'If-Match': `${this.etag}`
         }
       }
-      axios.put(`ator-list/${this.model.id_ator}/`, this.model, axiosConfig)
+      axios.put(`ator-list/${this.model.id_ator}/`, this.model, headers)
       .then(res => {
         this.$store.dispatch('findAtorList')
         this.cancel()
@@ -85,6 +83,12 @@ export default {
   },
   created () { // alterar para um get futuramente
     this.model = JSON.parse(JSON.stringify(this.$store.state.editModel))
+  },
+  mounted () {
+    axios.get(`ator-list/${this.model.id_ator}/`)
+      .then(res => {
+        this.etag = res.headers.etag
+      })
   }
 }
 </script>

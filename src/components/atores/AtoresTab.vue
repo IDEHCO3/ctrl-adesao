@@ -84,6 +84,11 @@
             </v-expansion-panel-content>
           </v-expansion-panel>
         </template>
+        <template v-slot:no-data>
+          <v-alert :value="true" color="error" icon="warning">
+            Erro: Dados não encontrados !
+          </v-alert>
+        </template>
       </v-data-table>
       
       <div class="text-xs-center pt-2">

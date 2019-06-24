@@ -57,7 +57,11 @@
         <td class="text-xs-center">{{ props.item.tem_download }}</td>
         <td class="text-xs-center">{{ props.item.tem_vinde }}</td>
       </template>
-
+      <template v-slot:no-data>
+        <v-alert :value="true" color="error" icon="warning">
+          Erro: Dados não encontrados !
+        </v-alert>
+      </template>
     </v-data-table>
       <div class="text-xs-center pt-2">
         <v-pagination v-model="pagination.page" :length="pages" :total-visible="12"></v-pagination>

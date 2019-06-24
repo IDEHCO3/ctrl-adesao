@@ -23,6 +23,8 @@
 
 <script>
 import axios from 'axios'
+import request from '@/request'
+
 export default {
   data () {
     return {
@@ -31,16 +33,8 @@ export default {
     }
   },
   methods: {
-    async request (url, http_method = axios.get) {
-      try {
-        const response = await http_method(url)
-        return response
-      } catch (e) {
-        console.log(e)
-      }
-    },
     async deleteItem () {
-      await this.request(this.url, axios.delete)
+      await request(this.url, axios.delete)
       this.$store.dispatch('findAtorList')
       this.name = ''
       this.url = ''
