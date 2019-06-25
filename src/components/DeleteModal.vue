@@ -36,6 +36,7 @@ export default {
     async deleteItem () {
       await request(this.url, axios.delete)
       this.$store.dispatch('findAtorList')
+      this.$store.dispatch('findRepresentanteList')
       this.name = ''
       this.url = ''
       this.$emit('close')

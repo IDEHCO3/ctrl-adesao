@@ -20,21 +20,20 @@
                   v-model="model.nome"
                   :counter="40"
                   required
-                ></v-text-field>
+                />
                 <v-text-field
                   label="E-mail"
                   v-model="model.email1"
-                  required
-                ></v-text-field>
+                />
               </v-flex>
               <v-flex xs12 md5>
-                <v-text-field label="Area/Setor" v-model="model.area_setor"></v-text-field>
+                <v-text-field label="Area/Setor" v-model="model.area_setor"/>
               </v-flex>&nbsp;&nbsp;
               <v-flex xs12 md5>
-                <v-text-field label="Função/Cargo" v-model="model.funcao_cargo"></v-text-field>
+                <v-text-field label="Função/Cargo" v-model="model.funcao_cargo"/>
               </v-flex>
-              <v-flex ml-2 mt-2 >
-                <v-checkbox label="Gestor" v-model="model.gestor"></v-checkbox>
+              <v-flex ml-2>
+                <v-select label="Gestor" v-model="model.gestor" :items="['Não', 'Sim', 'Não Informado']" item-value="text"/>
               </v-flex>
               <v-flex xs11 sm5 md3 >
                 <v-text-field
@@ -42,7 +41,7 @@
                   v-model="model.telefone1"
                   single-line
                   prepend-icon="phone"
-                ></v-text-field>
+                />
               </v-flex>
                   <v-flex xs11 sm5 md3 class="ml-5">
                     <v-text-field
@@ -50,7 +49,7 @@
                       v-model="model.telefone2"
                       single-line
                       prepend-icon="phone"
-                    ></v-text-field>
+                    />
                   </v-flex>
               <v-flex xs11 sm5 md3 class="ml-5">
                 <v-text-field
@@ -58,7 +57,7 @@
                   v-model="model.celular_telefone3"
                   single-line
                   prepend-icon="smartphone"
-                ></v-text-field>
+                />
               </v-flex>
 
             </v-layout>
@@ -88,7 +87,8 @@ export default {
   name: 'RepresentanteEdit',
   data () {
     return {
-      model: {}
+      model: {},
+      etag: ''
     }
   },
   methods: {
@@ -100,14 +100,26 @@ export default {
       return this.$store.state.editRepresentante
     },
     edit () {
-      axios.put(`representante-list/${this.model.id_representante}/`, this.model).then(res => {
+      let headers = {
+        headers: {
+          'If-Match': `${this.etag}`
+        }
+      }
+      axios.put(`representante-list/${this.model.id_representante}/`, this.model, headers)
+      .then(res => {
         this.$store.dispatch('findRepresentanteList')
         this.cancel()
       })
     }
   },
-  created () {
+  created () { // consertar no store
     this.model = JSON.parse(JSON.stringify(this.$store.state.editModel))
+  },
+  mounted () {
+    axios.get(`representante-list/${this.model.id_representante}/`)
+      .then(res => {
+        this.etag = res.headers.etag
+      })
   }
 }
 </script>

@@ -45,7 +45,7 @@
                 <v-flex slot="header">
                   <v-flex left mt-2>
                     {{ representante.nome }} <!-- Nome dos Representantes -->
-                    <!--<v-icon color="black" title="Gestor" v-if="representante.gestor">star</v-icon>-->
+                    <v-icon color="black" title="Gestor" v-if="representante.gestor == 'Sim'">star_border</v-icon>
                   </v-flex>
                   <v-flex right> 
                     <v-btn icon small title="Editar" @click.stop="editRepresentante(representante)">

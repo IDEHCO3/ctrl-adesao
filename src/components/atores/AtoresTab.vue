@@ -56,10 +56,10 @@
           <td class="text-xs-left">
             {{ props.item.nome }}
             <v-flex right>
-              <v-btn icon class="ma-0" @click.native.stop="editAtor(props.item)">
+              <v-btn icon class="ma-0" title="Editar" @click.native.stop="editAtor(props.item)">
                 <v-icon>edit</v-icon>
               </v-btn>
-              <v-btn icon class="ma-0" @click.native.stop="deleteAtor(props.item)">
+              <v-btn icon class="ma-0" title="Apagar" @click.native.stop="deleteAtor(props.item)">
                 <v-icon color="red darken-3">delete</v-icon>
               </v-btn>
             </v-flex>

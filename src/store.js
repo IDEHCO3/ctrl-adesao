@@ -47,7 +47,7 @@ const state = {
   editAtor: false,
   editPublicacaoGeoespacial: false,
   editRepresentante: false,
-  editModel: {},
+  editModel: {}, // não usado dps consertar
   ator_list: [],
   representante_list: [],
   publicacao_geoespacial_list: []
