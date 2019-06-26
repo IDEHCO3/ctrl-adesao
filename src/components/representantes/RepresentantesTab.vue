@@ -60,27 +60,43 @@
                 <v-card>
                   <table>
                     <tr>
-                      <th>Email</th>
-                      <td>{{ representante.email1 }}</td>
-                    </tr>
-                    <tr>
-                      <th>Contatos</th>
-                      <td>{{ representante.telefone1 }}<td>
-                      <td>{{ representante.telefone2 }}</td>
-                      <td>{{ representante.celular_telefone3 }}</td>
-                    </tr>
-
-                    <tr>
-                      <th>Função/Cargo</th>
-                      <td v-if="representante.funcao_cargo">
-                        {{ representante.funcao_cargo }}
+                      <th>Area/Setor</th>
+                      <td v-if="representante.area_setor">
+                        {{ representante.area_setor }}
                       </td>
                       <td v-else>Não informado</td>
                     </tr>
                     <tr>
-                      <th>Area/Setor</th>
-                      <td v-if="representante.area_setor">
-                        {{ representante.area_setor }}
+                      <th>Capacitado</th>
+                      <td v-if="representante.capacitado">
+                        {{ representante.capacitado }}
+                      </td>
+                      <td v-else>Não informado</td>
+                    </tr>
+                    <tr>
+                      <th>Contatos</th>
+                      <td>
+                        <v-icon>phone</v-icon>
+                        {{ representante.telefone1 }}
+                      </td>
+                      <td>
+                        <v-icon>phone</v-icon>
+                        {{ representante.telefone2 }}
+                      </td>
+                      <td>
+                        <v-icon>smartphone</v-icon>
+                        {{ representante.celular_telefone3 }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Email</th>
+                      <td>{{ representante.email1 }}</td>
+                      <td>{{ representante.email2 }}</td>
+                    </tr>
+                    <tr>
+                      <th>Função/Cargo</th>
+                      <td v-if="representante.funcao_cargo">
+                        {{ representante.funcao_cargo }}
                       </td>
                       <td v-else>Não informado</td>
                     </tr>

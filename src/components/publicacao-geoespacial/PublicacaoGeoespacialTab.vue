@@ -1,10 +1,14 @@
 <template>
   <v-flex xs12 md10 offset-md1>
-    <!--<representante-edit v-if="this.$store.state.editRepresentante"></representante-edit> -->
+    <!--<PublicacaogeoespacialEdit v-if="this.$store.state.editAtor"/> -->
+    <v-dialog v-model="addPublicacaoModal" persistent max-width="800px">
+      <add-publicacao-geoespacial @close="addPublicacaoModal = false"/>
+    </v-dialog>    
+    
     <v-card height="100%">
     <v-card-title>
       <v-flex center>
-        <v-btn outline @click="addPublicacaoGeoespacial" color="primary">
+        <v-btn outline @click="addPublicacaoModal = true" color="primary">
           Nova Publicação
           <v-icon color="primary">add</v-icon>
         </v-btn>
@@ -56,6 +60,14 @@
         <td class="text-xs-center">{{ props.item.tem_geoservicos }}</td>
         <td class="text-xs-center">{{ props.item.tem_download }}</td>
         <td class="text-xs-center">{{ props.item.tem_vinde }}</td>
+        <td class="justify-center layout px-0">
+          <v-btn icon :href="props.item" target="_blank" title="Editar">
+            <v-icon color="success">edit</v-icon>
+          </v-btn>
+          <v-btn icon :href="props.item" target="_blank" title="Apagar">
+            <v-icon color="error">delete</v-icon>
+          </v-btn>
+        </td>
       </template>
       <template v-slot:no-data>
         <v-alert :value="true" color="error" icon="warning">
@@ -72,16 +84,17 @@
 
 <script>
 import { mapGetters } from 'vuex'
-// import RepresentanteEdit from '../representantes/RepresentanteEdit' // gambiarra louca
+import AddPublicacaoGeoespacial from './AddPublicacaoGeoespacial.vue'
 
 export default {
   name: 'publicacaoGeoespacialTab',
-  // components: {RepresentanteEdit},
+  components: {AddPublicacaoGeoespacial},
   data () {
     return {
+      addPublicacaoModal: false,
       search: '',
       pagination: {},
-      rows: [12],
+      rows: [13],
       metadados: '',
       geoservicos: '',
       download: '',
@@ -97,14 +110,12 @@ export default {
         {text: 'Metadados', sortable: false, align: 'center'},
         {text: 'Geoserviços', sortable: false, align: 'center'},
         {text: 'Download', sortable: false, align: 'center'},
-        {text: 'VINDE', sortable: false, align: 'center'}
+        {text: 'VINDE', sortable: false, align: 'center'},
+        {text: 'Ações', sortable: false, align: 'center'}
       ]
     }
   },
   methods: {
-    addPublicacaoGeoespacial () {
-      console.log('s')
-    },
     filters (publicacao, filter) {
       if (publicacao === null || filter === null) {
         return true
@@ -116,7 +127,7 @@ export default {
       }
     },
     filterNome (linkedData) {
-      const id = parseInt(linkedData.split('/').reverse()[0]) // programação orientada a gambiarra
+      const id = parseInt(linkedData.split('/').reverse()[0])
       const nome = this.atorList.find(ator => ator.id_ator === id).nome
       if (nome) {
         return nome

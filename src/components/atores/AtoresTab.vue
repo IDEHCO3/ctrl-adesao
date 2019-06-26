@@ -55,20 +55,20 @@
         <template slot="items" slot-scope="props">
           <td class="text-xs-left">
             {{ props.item.nome }}
-            <v-flex right>
-              <v-btn icon class="ma-0" title="Editar" @click.native.stop="editAtor(props.item)">
-                <v-icon>edit</v-icon>
-              </v-btn>
-              <v-btn icon class="ma-0" title="Apagar" @click.native.stop="deleteAtor(props.item)">
-                <v-icon color="red darken-3">delete</v-icon>
-              </v-btn>
-            </v-flex>
+            
           </td>
           <td class="text-xs-center">{{ props.item.status_adesao }}</td>
           <td class="text-xs-center">{{ props.item.capacitacao }}</td>
           <td class="text-xs-center">{{ props.item.modalidade }}</td>
-
-          <v-expansion-panel expand popout>
+          <td class="justify-center layout">
+            <v-btn icon title="Editar" @click.native.stop="editAtor(props.item)">
+                <v-icon color="success">edit</v-icon>
+            </v-btn>
+            <v-btn icon title="Apagar" @click.native.stop="deleteAtor(props.item)">
+                <v-icon color="error">delete</v-icon>
+              </v-btn>
+          </td>
+          <!--<v-expansion-panel expand popout>
             <v-expansion-panel-content >
               <div slot="header">DOC Solicitação</div>
               <v-card>
@@ -82,7 +82,7 @@
                 <v-card-text class="grey lighten-3">{{ props.item.observacao }}</v-card-text>
               </v-card>
             </v-expansion-panel-content>
-          </v-expansion-panel>
+          </v-expansion-panel>-->
         </template>
         <template v-slot:no-data>
           <v-alert :value="true" color="error" icon="warning">
@@ -117,7 +117,7 @@ export default {
       deleteDialog: false,
       search: '',
       pagination: {},
-      rows: [8],
+      rows: [13],
       statusAdesao: '',
       capacitacao: '',
       modalidade: '',
@@ -131,7 +131,8 @@ export default {
         {text: 'Nome', align: 'center', sortable: false},
         {text: 'Status da Adesão', sortable: false, align: 'center'},
         {text: 'Capacitação', sortable: false, align: 'center'},
-        {text: 'Modalidade', sortable: false, align: 'center'}
+        {text: 'Modalidade', sortable: false, align: 'center'},
+        {text: 'Ações', sortable: false, align: 'center'}
       ]
     }
   },
