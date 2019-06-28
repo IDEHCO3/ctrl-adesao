@@ -3,8 +3,8 @@
     <v-dialog v-model="dialog" persistent max-width="800px">
       <v-card class="grey lighten-4 elevation-0">
         <v-card-title class="pa-0 primary">
-          <v-flex center>
-            <div class="headline">Editar Ator</div>
+          <v-flex center class="headline textPrimary--text">
+            Editar Ator
           </v-flex>
           <v-btn flat icon color="red" @click.native="cancel">
             <v-icon light>cancel</v-icon>
@@ -13,18 +13,32 @@
 
         <v-card-text class="pt-0 pb-0">
           <v-container fluid>
-            <v-layout row wrap>
+            <v-layout row wrap justify-center>
+              
               <v-flex xs12>
                 <v-text-field label="Ator" required v-model="model.nome"/>
               </v-flex>
-
-              <v-flex xs12 sm4>
-                <v-select label="Status Adesão" required v-model="model.status_adesao" :items="['Implementado', 'Interessado', 'Processo de Adesão']"/>
+              <v-flex xs12 md3>
                 <v-select label="Capacitação" v-model="model.capacitacao" :items="['Sim', 'Não', 'Não Informado']"/>
+              </v-flex>
+              <v-flex xs12 md3 ml-4>  
                 <v-select label="Modalidade" v-model="model.modalidade" :items="['NP', 'NC', 'Não Informado']"/>
               </v-flex>
+              <v-flex xs12 md3 ml-4>
+                <v-select label="Nó implementado" v-model="model.no_implementado" :items="['Sim', 'Não', 'Não Informado']"/>
+              </v-flex>
+              <v-flex xs12 md4>
+                <v-select label="Status Adesão" required v-model="model.status_adesao" :items="['Implementado', 'Interessado', 'Processo de Adesão']"/>
+              </v-flex>
+              <v-flex xs12 md4 ml-4>
+                <v-menu lazy  :close-on-content-click="true"  v-model="dateSelector"  transition="scale-transition" offset-y full-width  :nudge-left="40" max-width="290px">
+                  <v-text-field slot="activator" label="Data do Oficio" v-model="model.data_oficio" readonly></v-text-field>
+                  <v-date-picker  v-model="model.data_oficio" no-title scrollable actions>
+                  </v-date-picker>
+                </v-menu>
+              </v-flex>
 
-              <v-flex xs12 sm7 offset-sm1>
+              <v-flex xs12 md12>
                 <v-text-field label="Observação" multi-line v-model="model.observacao"/>
                 <v-text-field label="DOC Solicitação" multi-line v-model="model.documento_solicitacao"/>
               </v-flex>
@@ -55,9 +69,10 @@ export default {
   name: 'AtorEdit',
   data () {
     return {
+      dateSelector: false,
+      etag: '',
       model: {},
-      prevModel: {},
-      etag: ''
+      prevModel: {}
     }
   },
   methods: {

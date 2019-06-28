@@ -1,9 +1,12 @@
 <template>
   <v-flex xs12 md10 offset-md1>
-    <!--<PublicacaogeoespacialEdit v-if="this.$store.state.editAtor"/> -->
+    <PublicacaogeoespacialEdit v-if="this.$store.state.editPublicacaoGeoespacial"/>
     <v-dialog v-model="addPublicacaoModal" persistent max-width="800px">
       <add-publicacao-geoespacial @close="addPublicacaoModal = false"/>
-    </v-dialog>    
+    </v-dialog>
+    <v-dialog v-model="deleteDialog" persistent max-width="350">
+      <delete-modal @close="deleteDialog = false" ref="deletePublic"/>
+    </v-dialog>
     
     <v-card height="100%">
     <v-card-title>
@@ -61,10 +64,10 @@
         <td class="text-xs-center">{{ props.item.tem_download }}</td>
         <td class="text-xs-center">{{ props.item.tem_vinde }}</td>
         <td class="justify-center layout px-0">
-          <v-btn icon :href="props.item" target="_blank" title="Editar">
+          <v-btn icon @click.native.stop="editPublic(props.item)" target="_blank" title="Editar">
             <v-icon color="success">edit</v-icon>
           </v-btn>
-          <v-btn icon :href="props.item" target="_blank" title="Apagar">
+          <v-btn icon @click.native.stop="deletePublic(props.item)" target="_blank" title="Apagar">
             <v-icon color="error">delete</v-icon>
           </v-btn>
         </td>
@@ -75,9 +78,9 @@
         </v-alert>
       </template>
     </v-data-table>
-      <div class="text-xs-center pt-2">
-        <v-pagination v-model="pagination.page" :length="pages" :total-visible="12"></v-pagination>
-      </div>
+    <div class="text-xs-center pt-2">
+      <v-pagination v-model="pagination.page" :length="pages" :total-visible="12"></v-pagination>
+    </div>
     </v-card>
   </v-flex>
 </template>
@@ -85,13 +88,16 @@
 <script>
 import { mapGetters } from 'vuex'
 import AddPublicacaoGeoespacial from './AddPublicacaoGeoespacial.vue'
+import PublicacaogeoespacialEdit from './PublicacaoGeoespacialEdit.vue'
+import DeleteModal from '../DeleteModal'
 
 export default {
   name: 'publicacaoGeoespacialTab',
-  components: {AddPublicacaoGeoespacial},
+  components: {AddPublicacaoGeoespacial, PublicacaogeoespacialEdit, DeleteModal},
   data () {
     return {
       addPublicacaoModal: false,
+      deleteDialog: false,
       search: '',
       pagination: {},
       rows: [13],
@@ -116,6 +122,10 @@ export default {
     }
   },
   methods: {
+    editPublic (publicacao) {
+      this.$store.state.editPublicacaoGeoespacial = true
+      this.$store.state.editModel = publicacao
+    },
     filters (publicacao, filter) {
       if (publicacao === null || filter === null) {
         return true
@@ -132,6 +142,13 @@ export default {
       if (nome) {
         return nome
       }
+    },
+    deletePublic (publicacao) {
+      const id = parseInt(publicacao.id_ator.split('/').reverse()[0])
+      const nome = this.atorList.find(ator => ator.id_ator === id).nome
+      this.$refs.deletePublic.name = nome
+      this.$refs.deletePublic.url = `publicacaoinformacaogeoespacial-list/${publicacao.id_publicacao_informacao_geoespacial}/`
+      this.deleteDialog = true
     },
     sortByNome (items) {
       return items.sort((a, b) => {

@@ -2,8 +2,8 @@
   <v-card class="grey lighten-4 elevation-0">
 
     <v-card-title class="pa-0 primary">
-      <v-flex center>
-        <div class="headline"> Nova Publicação Geoespacial </div>
+      <v-flex center class="headline textPrimary--text">
+        Nova Publicação Geoespacial
       </v-flex>
 
       <v-btn flat icon color="red" @click.native="close">
@@ -84,9 +84,9 @@ export default {
         tem_vinde: ''
       },
       selectOption: [
-        {text: 'Sim'},
-        {text: 'Não'},
-        {text: 'Não informado'}
+        'Sim',
+        'Não',
+        'Não informado'
       ]
     }
   },

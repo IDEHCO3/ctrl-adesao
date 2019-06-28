@@ -2,8 +2,8 @@
   <v-card class="grey lighten-4 elevation-0">
 
     <v-card-title class="pa-0 primary">
-      <v-flex center>
-        <div class="headline"> Novo Ator </div>
+      <v-flex center class="headline textPrimary--text">
+        Novo Ator
       </v-flex>
 
       <v-btn flat icon color="red" @click.native="close">
@@ -13,19 +13,32 @@
 
     <v-card-text>
       <v-container class="pt-0" fluid>
-        <v-layout row wrap>
+        <v-layout row wrap justify-center>
 
           <v-flex xs12>
             <v-text-field label="Nome do ator" v-model="ator.nome" required/>
           </v-flex>
-
-          <v-flex xs12 sm4>
-            <v-select label="Status Adesão" required v-model="ator.status_adesao" :items="['Implementado', 'Interessado', 'Processo de Adesão']"/>
+          <v-flex xs12 md4>
             <v-select label="Capacitação" v-model="ator.capacitacao" :items="['Sim', 'Não', 'Não Informado']"/>
+          </v-flex>
+          <v-flex xs12 md4 ml-4>
             <v-select label="Modalidade" v-model="ator.modalidade" :items="['NP', 'NC', 'Não Informado']"/>
           </v-flex>
+          <v-flex xs12 md3 ml-4>
+            <v-select label="Nó implementado" v-model="ator.no_implementado" :items="['Sim', 'Não', 'Não Informado']"/>
+          </v-flex>
+          <v-flex xs12 md4>
+            <v-select label="Status Adesão" required v-model="ator.status_adesao" :items="['Implementado', 'Interessado', 'Processo de Adesão']"/>
+          </v-flex>
+          <v-flex xs12 md4 ml-4>
+            <v-menu lazy  :close-on-content-click="true"  v-model="dateSelector"  transition="scale-transition" offset-y full-width  :nudge-left="40" max-width="290px">
+              <v-text-field slot="activator" label="Data do Oficio" v-model="ator.data_oficio" readonly></v-text-field>
+              <v-date-picker  v-model="ator.data_oficio" no-title scrollable actions>
+              </v-date-picker>
+            </v-menu>
+          </v-flex>
 
-          <v-flex xs12 sm7 offset-sm1>
+          <v-flex xs12 md12>
             <v-text-field label="Observação" multi-line v-model="ator.observacao"/>
             <v-text-field label="DOC Solicitação" multi-line v-model="ator.documento_solicitacao"/>
           </v-flex>
@@ -53,11 +66,14 @@ import axios from 'axios'
 export default {
   data () {
     return {
+      dateSelector: false,
       ator: {
         nome: '',
         capacitacao: '',
+        data_oficio: null,
         documento_solicitacao: '',
         modalidade: '',
+        no_implementado: '',
         observacao: '',
         status_adesao: ''
       }
@@ -81,8 +97,10 @@ export default {
       this.ator = {
         nome: '',
         capacitacao: '',
+        data_oficio: '',
         documento_solicitacao: '',
         modalidade: '',
+        no_implementado: '',
         observacao: '',
         status_adesao: ''
       }

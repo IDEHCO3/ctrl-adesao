@@ -26,21 +26,28 @@
             v-model="statusAdesao"
             label="Status de Adesão"
             item-value="text"
-          ></v-select>
+          />
+          <v-select
+            class="mr-2"
+            :items="[{text: ''},{text: 'Sim'},{text: 'Não'},{text: 'Não Informado'}]"
+            v-model="noImplementado"
+            label="Nó implementado"
+            item-value="text"
+          />
           <v-select
             class="mr-2"
             :items="[{text: ''},{text: 'Sim'},{text: 'Não'},{text: 'Não Informado'}]"
             v-model="capacitacao"
             label="Capacitação"
             item-value="text"
-          ></v-select>
+          />
           <v-select
             class="mr-2"
             :items="[{text: ''},{text: 'NP'},{text: 'NC'},{text: 'Não Informado'}]"
             v-model="modalidade"
             label="Modalidade"
             item-value="text"
-          ></v-select>
+          />
         </v-flex>
 
         <v-flex ma-0 xs12 sm6 md3>
@@ -58,6 +65,7 @@
             
           </td>
           <td class="text-xs-center">{{ props.item.status_adesao }}</td>
+          <td class="text-xs-center">{{ props.item.no_implementado }}</td>
           <td class="text-xs-center">{{ props.item.capacitacao }}</td>
           <td class="text-xs-center">{{ props.item.modalidade }}</td>
           <td class="justify-center layout">
@@ -86,7 +94,7 @@
         </template>
         <template v-slot:no-data>
           <v-alert :value="true" color="error" icon="warning">
-            Erro: Dados não encontrados !
+            Dados não encontrados !
           </v-alert>
         </template>
       </v-data-table>
@@ -119,6 +127,7 @@ export default {
       pagination: {},
       rows: [13],
       statusAdesao: '',
+      noImplementado: '',
       capacitacao: '',
       modalidade: '',
       status: [
@@ -130,6 +139,7 @@ export default {
       headers: [
         {text: 'Nome', align: 'center', sortable: false},
         {text: 'Status da Adesão', sortable: false, align: 'center'},
+        {text: 'Nó implementado', sortable: false, align: 'center'},
         {text: 'Capacitação', sortable: false, align: 'center'},
         {text: 'Modalidade', sortable: false, align: 'center'},
         {text: 'Ações', sortable: false, align: 'center'}
@@ -169,11 +179,13 @@ export default {
       const atores = this.atorList
       let filters = []
       filters['statusAdesao'] = this.statusAdesao === '' ? null : this.statusAdesao
+      filters['noImplementado'] = this.noImplementado === '' ? null : this.noImplementado
       filters['capacitacao'] = this.capacitacao === '' ? null : this.capacitacao
       filters['modalidade'] = this.modalidade === '' ? null : this.modalidade
       let list = atores.filter(ator => ator.nome.match(new RegExp(this.search, 'i')))
       return list.filter(ator =>
         this.filters(ator.status_adesao, filters.statusAdesao) &&
+        this.filters(ator.no_implementado, filters.noImplementado) &&
         this.filters(ator.capacitacao, filters.capacitacao) &&
         this.filters(ator.modalidade, filters.modalidade)
         )

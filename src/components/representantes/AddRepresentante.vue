@@ -2,8 +2,8 @@
   <v-card class="grey lighten-4 elevation-0">
 
     <v-card-title class="pa-0 primary">
-      <v-flex center>
-        <div class="headline">Novo Representante</div>
+      <v-flex center class="headline textPrimary--text">
+        Novo Representante
       </v-flex>
       <v-btn flat icon color="red" @click.native="close">
         <v-icon light>cancel</v-icon>
