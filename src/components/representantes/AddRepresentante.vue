@@ -15,10 +15,10 @@
         <v-layout row wrap justify-center>
           <v-flex xs11>
             <v-text-field
-              label="Nome"
+              label="Nome *"
               v-model="representante.nome"
               :counter="40"
-              required
+              :rules="[rules.required]"
             />
           </v-flex>
           <v-flex xs12 md5>
@@ -105,6 +105,9 @@ export default {
         funcao_cargo: '',
         id_ator: '',
         gestor: ''
+      },
+      rules: {
+        required: v => !!v || 'Este campo é obrigatorio'
       }
     }
   },

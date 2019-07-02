@@ -14,7 +14,7 @@ module.exports = {
     proxyTable: {},
 
     // Various Dev Server settings
-    host: 'localhost', // http://ggt-des.ibge.gov.br/
+    host: '172.30.137.114', // http://ggt-des.ibge.gov.br/
     port: 8090, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: true,
     errorOverlay: true,

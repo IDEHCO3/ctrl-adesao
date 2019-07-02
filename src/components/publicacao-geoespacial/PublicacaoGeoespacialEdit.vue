@@ -14,17 +14,6 @@
         <v-card-text class="pt-0 pb-0">
           <v-container fluid>
             <v-layout row wrap justify-center>
-              <v-flex xs12>
-                <v-text-field label="Nome do Ator" required v-model="model.id_ator"/>
-              </v-flex>
-              <v-flex xs12 md5 grey>
-                <v-autocomplete
-                  :items="ParsedAtorNames"
-                  :filter="customFilter"
-                  item-text="name"
-                  label="Nome do autor auto complete"
-                ></v-autocomplete>
-              </v-flex>
               <v-flex xs12 md5>
                 <v-select
                   class="mr-2"
@@ -79,6 +68,7 @@
 
 <script>
 import axios from 'axios'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'AtorEdit',
@@ -86,7 +76,13 @@ export default {
     return {
       etag: '',
       model: {},
-      ParsedAtorNames: ['test1', 'test2'],
+      rules: {
+        required: v => !!v || 'Este campo é obrigatorio'
+      },
+      parsedAtor: {
+        parsedNameList: [],
+        idList: []
+      },
       selectOption: [
         'Sim',
         'Não',
@@ -95,14 +91,12 @@ export default {
     }
   },
   methods: {
+    test () {
+      return this.atorList
+    },
     cancel () {
       this.$store.state.editPublicacaoGeoespacial = false
       this.$store.commit('clearModel')
-    },
-    customFilter (item, itemText) {
-      const textOne = item.name.toLowerCase()
-
-      return textOne.indexOf(searchText) > -1
     },
     dialog () {
       return this.$store.state.editPublicacaoGeoespacial
@@ -120,13 +114,17 @@ export default {
       })
     }
   },
-  created () { // alterar para um get futuramente
+  computed: {
+    ...mapGetters({atorList: 'getAtorList'})
+  },
+  created () {
     this.model = JSON.parse(JSON.stringify(this.$store.state.editModel))
   },
   mounted () {
     axios.get(`publicacaoinformacaogeoespacial-list/${this.model.id_publicacao_informacao_geoespacial}/`)
       .then(res => {
         this.etag = res.headers.etag
+        this.model = res.data
       })
   }
 }

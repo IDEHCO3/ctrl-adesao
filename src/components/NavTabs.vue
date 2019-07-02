@@ -1,37 +1,32 @@
 <template>
   <v-app>
-		<v-tabs grow centered>	  
-	    <v-tabs-bar color="primary" dark>
-	      <v-tabs-slider color="grey lighten-1"/>
-	      <v-tabs-item v-for="tab in tabs" :key="tab.nome" :href="'#' + tab.nome">
-	        {{ tab.nome }}
-	      </v-tabs-item>
-        <v-btn  icon @click="$router.push('/login')">
-          <v-icon large>account_box</v-icon>
-        </v-btn>
-	    </v-tabs-bar>
-
-	    <v-tabs-items>
-	      <v-tabs-content id="ATOR">
-	        <v-card flat>
-	          <atores-tab></atores-tab>
-	        </v-card>
-	      </v-tabs-content>
-
-        <v-tabs-content id="REPRESENTANTES">
-          <v-card flat>
-            <representantes-tab></representantes-tab>
-          </v-card>
-        </v-tabs-content>
-
-        <v-tabs-content id="PUBLICAÇÃO GEOESPACIAL">
-          <v-card flat>
-            <publicacao-geoespacial-tab></publicacao-geoespacial-tab>
-          </v-card>
-        </v-tabs-content>
-	    </v-tabs-items>
-
-	  </v-tabs>
+    <v-tabs
+      v-model="tab"
+      color="primary"
+      grow
+      dark
+    >
+      <v-tabs-slider color="warning"/>
+      <v-tab
+        v-for="item in tabs"
+        :key="item"
+      >
+        {{ item }}
+      </v-tab>
+      <!--
+      <v-btn  icon @click="$router.push('/login')">
+        <v-icon large>account_box</v-icon>
+      </v-btn>
+      -->
+    </v-tabs>
+    
+    <v-tabs-items v-model="tab">
+      <v-tab-item v-for="item in tabs" :key="item">
+        <atores-tab v-if='item=="ATOR"'></atores-tab>
+        <representantes-tab v-if='item=="REPRESENTANTES"'></representantes-tab>
+        <publicacao-geoespacial-tab v-if='item=="PUBLICAÇÃO GEOESPACIAL"'></publicacao-geoespacial-tab>
+      </v-tab-item>
+    </v-tabs-items>
   </v-app>
 </template>
 
@@ -47,10 +42,11 @@ export default {
   },
   data () {
     return {
+      tab: null,
       tabs: [
-        {nome: 'ATOR'},
-        {nome: 'REPRESENTANTES'},
-        {nome: 'PUBLICAÇÃO GEOESPACIAL'}
+        'ATOR',
+        'REPRESENTANTES',
+        'PUBLICAÇÃO GEOESPACIAL'
       ]
     }
   }

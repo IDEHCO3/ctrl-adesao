@@ -14,11 +14,16 @@
     <v-card-text>
       <v-container class="pt-0" fluid>
         <v-layout row wrap justify-center>
-
           <v-flex xs12>
-            <v-text-field label="Nome do Ator" v-model="publicacaoGeoespacial.id_ator" required/>
+            <v-autocomplete
+              :items="this.atorList"
+              item-text="nome"
+              item-value="id_ator"
+              v-model="publicacaoGeoespacial.id_ator"
+              label="Nome do Ator *"
+              :rules="[rules.required]"
+            />
           </v-flex>
-
           <v-flex xs12 md5>
             <v-select
               class="mr-2"
@@ -82,6 +87,9 @@ export default {
         tem_geoservicos: '',
         tem_metadados: '',
         tem_vinde: ''
+      },
+      rules: {
+        required: v => !!v || 'Este campo é obrigatorio'
       },
       selectOption: [
         'Sim',

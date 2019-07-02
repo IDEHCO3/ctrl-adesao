@@ -16,7 +16,7 @@
             <v-layout row wrap justify-center>
               
               <v-flex xs12>
-                <v-text-field label="Ator" required v-model="model.nome"/>
+                <v-text-field label="Nome do Ator *" :rules="[rules.required]" v-model="model.nome"/>
               </v-flex>
               <v-flex xs12 md3>
                 <v-select label="Capacitação" v-model="model.capacitacao" :items="['Sim', 'Não', 'Não Informado']"/>
@@ -28,7 +28,7 @@
                 <v-select label="Nó implementado" v-model="model.no_implementado" :items="['Sim', 'Não', 'Não Informado']"/>
               </v-flex>
               <v-flex xs12 md4>
-                <v-select label="Status Adesão" required v-model="model.status_adesao" :items="['Implementado', 'Interessado', 'Processo de Adesão']"/>
+                <v-select label="Status Adesão *" :rules="[rules.required]" v-model="model.status_adesao" :items="['Implementado', 'Interessado', 'Processo de Adesão']"/>
               </v-flex>
               <v-flex xs12 md4 ml-4>
                 <v-menu lazy  :close-on-content-click="true"  v-model="dateSelector"  transition="scale-transition" offset-y full-width  :nudge-left="40" max-width="290px">
@@ -39,8 +39,8 @@
               </v-flex>
 
               <v-flex xs12 md12>
-                <v-text-field label="Observação" multi-line v-model="model.observacao"/>
-                <v-text-field label="DOC Solicitação" multi-line v-model="model.documento_solicitacao"/>
+                <v-textarea label="Observação" auto-grow v-model="model.observacao"/>
+                <v-textarea label="DOC Solicitação" auto-grow v-model="model.documento_solicitacao"/>
               </v-flex>
             </v-layout>
 
@@ -72,7 +72,10 @@ export default {
       dateSelector: false,
       etag: '',
       model: {},
-      prevModel: {}
+      prevModel: {},
+      rules: {
+        required: v => !!v || 'Este campo é obrigatorio'
+      }
     }
   },
   methods: {
@@ -96,13 +99,14 @@ export default {
       })
     }
   },
-  created () { // alterar para um get futuramente
+  created () {
     this.model = JSON.parse(JSON.stringify(this.$store.state.editModel))
   },
   mounted () {
     axios.get(`ator-list/${this.model.id_ator}/`)
       .then(res => {
         this.etag = res.headers.etag
+        this.model = res.data
       })
   }
 }

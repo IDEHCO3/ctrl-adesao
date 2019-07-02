@@ -16,7 +16,7 @@
         <v-layout row wrap justify-center>
 
           <v-flex xs12>
-            <v-text-field label="Nome do ator" v-model="ator.nome" required/>
+            <v-text-field label="Nome do ator *" v-model="ator.nome" :rules="[rules.required]"/>
           </v-flex>
           <v-flex xs12 md4>
             <v-select label="Capacitação" v-model="ator.capacitacao" :items="['Sim', 'Não', 'Não Informado']"/>
@@ -28,7 +28,7 @@
             <v-select label="Nó implementado" v-model="ator.no_implementado" :items="['Sim', 'Não', 'Não Informado']"/>
           </v-flex>
           <v-flex xs12 md4>
-            <v-select label="Status Adesão" required v-model="ator.status_adesao" :items="['Implementado', 'Interessado', 'Processo de Adesão']"/>
+            <v-select label="Status Adesão *" :rules="[rules.required]" v-model="ator.status_adesao" :items="['Implementado', 'Interessado', 'Processo de Adesão']"/>
           </v-flex>
           <v-flex xs12 md4 ml-4>
             <v-menu lazy  :close-on-content-click="true"  v-model="dateSelector"  transition="scale-transition" offset-y full-width  :nudge-left="40" max-width="290px">
@@ -39,8 +39,8 @@
           </v-flex>
 
           <v-flex xs12 md12>
-            <v-text-field label="Observação" multi-line v-model="ator.observacao"/>
-            <v-text-field label="DOC Solicitação" multi-line v-model="ator.documento_solicitacao"/>
+            <v-textarea label="Observação" auto-grow v-model="ator.observacao"/>
+            <v-textarea label="DOC Solicitação" auto-grow v-model="ator.documento_solicitacao"/>
           </v-flex>
         </v-layout>
 
@@ -67,6 +67,9 @@ export default {
   data () {
     return {
       dateSelector: false,
+      rules: {
+        required: v => !!v || 'Este campo é obrigatorio'
+      },
       ator: {
         nome: '',
         capacitacao: '',

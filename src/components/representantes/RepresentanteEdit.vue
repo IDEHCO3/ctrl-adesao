@@ -19,7 +19,7 @@
                   label="Nome"
                   v-model="model.nome"
                   :counter="40"
-                  required
+                  :rules="[rules.required]"
                 />
               </v-flex>
               <v-flex xs12 md5>
@@ -99,7 +99,10 @@ export default {
   data () {
     return {
       model: {},
-      etag: ''
+      etag: '',
+      rules: {
+        required: v => !!v || 'Este campo é obrigatorio'
+      }
     }
   },
   methods: {
@@ -123,13 +126,14 @@ export default {
       })
     }
   },
-  created () { // consertar no store
+  created () {
     this.model = JSON.parse(JSON.stringify(this.$store.state.editModel))
   },
   mounted () {
     axios.get(`representante-list/${this.model.id_representante}/`)
       .then(res => {
         this.etag = res.headers.etag
+        this.model = res.data
       })
   }
 }
