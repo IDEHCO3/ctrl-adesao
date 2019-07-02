@@ -49,10 +49,10 @@
                   </v-flex>
                   <v-flex right> 
                     <v-btn icon small title="Editar" @click.stop="editRepresentante(representante)">
-                      <v-icon>edit</v-icon>
+                      <v-icon color="success">edit</v-icon>
                     </v-btn>
                     <v-btn icon small title="Apagar" @click.stop="deleteRepresentante(representante)">
-                      <v-icon color="red darken-3">delete</v-icon>
+                      <v-icon color="error">delete</v-icon>
                     </v-btn>
                   </v-flex>
                 </v-flex>

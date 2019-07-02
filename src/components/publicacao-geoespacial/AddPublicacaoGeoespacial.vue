@@ -2,8 +2,8 @@
   <v-card class="grey lighten-4 elevation-0">
 
     <v-card-title class="pa-0 primary">
-      <v-flex center>
-        <div class="headline"> Nova Publicação Geoespacial </div>
+      <v-flex center class="headline textPrimary--text">
+        Nova Publicação Geoespacial
       </v-flex>
 
       <v-btn flat icon color="red" @click.native="close">
@@ -14,11 +14,16 @@
     <v-card-text>
       <v-container class="pt-0" fluid>
         <v-layout row wrap justify-center>
-
           <v-flex xs12>
-            <v-text-field label="Nome do Ator" v-model="publicacaoGeoespacial.id_ator" required/>
+            <v-autocomplete
+              :items="this.atorList"
+              item-text="nome"
+              item-value="id_ator"
+              v-model="publicacaoGeoespacial.id_ator"
+              label="Nome do Ator *"
+              :rules="[rules.required]"
+            />
           </v-flex>
-
           <v-flex xs12 md5>
             <v-select
               class="mr-2"
@@ -83,10 +88,13 @@ export default {
         tem_metadados: '',
         tem_vinde: ''
       },
+      rules: {
+        required: v => !!v || 'Este campo é obrigatorio'
+      },
       selectOption: [
-        {text: 'Sim'},
-        {text: 'Não'},
-        {text: 'Não informado'}
+        'Sim',
+        'Não',
+        'Não informado'
       ]
     }
   },

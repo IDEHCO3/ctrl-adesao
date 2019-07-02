@@ -2,8 +2,8 @@
   <v-card class="grey lighten-4 elevation-0">
 
     <v-card-title class="pa-0 primary">
-      <v-flex center>
-        <div class="headline">Novo Representante</div>
+      <v-flex center class="headline textPrimary--text">
+        Novo Representante
       </v-flex>
       <v-btn flat icon color="red" @click.native="close">
         <v-icon light>cancel</v-icon>
@@ -15,10 +15,10 @@
         <v-layout row wrap justify-center>
           <v-flex xs11>
             <v-text-field
-              label="Nome"
+              label="Nome *"
               v-model="representante.nome"
               :counter="40"
-              required
+              :rules="[rules.required]"
             />
           </v-flex>
           <v-flex xs12 md5>
@@ -105,6 +105,9 @@ export default {
         funcao_cargo: '',
         id_ator: '',
         gestor: ''
+      },
+      rules: {
+        required: v => !!v || 'Este campo é obrigatorio'
       }
     }
   },

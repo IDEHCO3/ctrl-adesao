@@ -35,8 +35,9 @@ export default {
   methods: {
     async deleteItem () {
       await request(this.url, axios.delete)
-      this.$store.dispatch('findAtorList')
+      this.$store.dispatch('findAtorList') // fazer if futuramente dependendo do que for deletado
       this.$store.dispatch('findRepresentanteList')
+      this.$store.dispatch('findPublicacaoGeoespacialList')
       this.name = ''
       this.url = ''
       this.$emit('close')
