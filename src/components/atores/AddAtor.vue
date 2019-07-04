@@ -28,7 +28,7 @@
             <v-select label="Nó implementado" v-model="ator.no_implementado" :items="['Sim', 'Não', 'Não Informado']"/>
           </v-flex>
           <v-flex xs12 md4>
-            <v-select label="Status Adesão *" :rules="[rules.required]" v-model="ator.status_adesao" :items="['Implementado', 'Interessado', 'Processo de Adesão']"/>
+            <v-select label="Status Adesão *" :rules="[rules.required]" v-model="ator.status_adesao" :items="['Implementado', 'Interessado', 'Processo de Adesão', 'Não Informado']"/>
           </v-flex>
           <v-flex xs12 md4 ml-4>
             <v-menu lazy  :close-on-content-click="true"  v-model="dateSelector"  transition="scale-transition" offset-y full-width  :nudge-left="40" max-width="290px">
@@ -71,14 +71,14 @@ export default {
         required: v => !!v || 'Este campo é obrigatorio'
       },
       ator: {
-        nome: '',
-        capacitacao: '',
+        nome: null,
+        capacitacao: null,
         data_oficio: null,
-        documento_solicitacao: '',
-        modalidade: '',
-        no_implementado: '',
-        observacao: '',
-        status_adesao: ''
+        documento_solicitacao: null,
+        modalidade: null,
+        no_implementado: null,
+        observacao: null,
+        status_adesao: null
       }
     }
   },

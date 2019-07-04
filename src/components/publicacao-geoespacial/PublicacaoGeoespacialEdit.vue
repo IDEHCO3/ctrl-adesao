@@ -4,7 +4,7 @@
       <v-card class="grey lighten-4 elevation-0">
         <v-card-title class="pa-0 primary">
           <v-flex center class="headline textPrimary--text">
-            Editar Publicação Geoespacial
+            {{ model.ator_nome }}
           </v-flex>
           <v-btn flat icon color="red" @click.native="cancel">
             <v-icon light>cancel</v-icon>
@@ -86,7 +86,7 @@ export default {
       selectOption: [
         'Sim',
         'Não',
-        'Não informado'
+        'Não Informado'
       ]
     }
   },

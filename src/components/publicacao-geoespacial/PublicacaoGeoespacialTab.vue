@@ -11,6 +11,11 @@
     <v-card height="100%">
     <v-card-title>
       <v-flex center>
+        <v-btn outline @click="downloadPDF(searchedList)" color="primary">
+          GERAR PDF
+          <v-icon color="primary">description</v-icon>
+        </v-btn>
+        <br>
         <v-btn outline @click="addPublicacaoModal = true" color="primary">
           Nova Publicação
           <v-icon color="primary">add</v-icon>
@@ -87,6 +92,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import pdfGenerator from '@/utils/PublicPdf'
 import AddPublicacaoGeoespacial from './AddPublicacaoGeoespacial.vue'
 import PublicacaogeoespacialEdit from './PublicacaoGeoespacialEdit.vue'
 import DeleteModal from '../DeleteModal'
@@ -109,7 +115,7 @@ export default {
         {text: ''},
         {text: 'Sim'},
         {text: 'Não'},
-        {text: 'Não informado'}
+        {text: 'Não Informado'}
       ],
       headers: [
         {text: 'Nome', align: 'center', sortable: false},
@@ -122,6 +128,9 @@ export default {
     }
   },
   methods: {
+    downloadPDF (list) {
+      pdfGenerator(list)
+    },
     editPublic (publicacao) {
       this.$store.state.editPublicacaoGeoespacial = true
       this.$store.state.editModel = publicacao

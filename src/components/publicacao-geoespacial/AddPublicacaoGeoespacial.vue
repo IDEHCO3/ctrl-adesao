@@ -82,11 +82,11 @@ export default {
   data () {
     return {
       publicacaoGeoespacial: {
-        id_ator: '',
-        tem_download: '',
-        tem_geoservicos: '',
-        tem_metadados: '',
-        tem_vinde: ''
+        id_ator: null,
+        tem_download: null,
+        tem_geoservicos: null,
+        tem_metadados: null,
+        tem_vinde: null
       },
       rules: {
         required: v => !!v || 'Este campo é obrigatorio'
@@ -94,7 +94,7 @@ export default {
       selectOption: [
         'Sim',
         'Não',
-        'Não informado'
+        'Não Informado'
       ]
     }
   },

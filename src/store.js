@@ -45,6 +45,7 @@ const mutations = {
 
 const state = {
   editAtor: false,
+  visuAtor: false,
   editPublicacaoGeoespacial: false,
   editRepresentante: false,
   editModel: {},

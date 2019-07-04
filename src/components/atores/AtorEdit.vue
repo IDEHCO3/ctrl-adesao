@@ -28,7 +28,7 @@
                 <v-select label="Nó implementado" v-model="model.no_implementado" :items="['Sim', 'Não', 'Não Informado']"/>
               </v-flex>
               <v-flex xs12 md4>
-                <v-select label="Status Adesão *" :rules="[rules.required]" v-model="model.status_adesao" :items="['Implementado', 'Interessado', 'Processo de Adesão']"/>
+                <v-select label="Status Adesão *" :rules="[rules.required]" v-model="model.status_adesao" :items="['Implementado', 'Interessado', 'Processo de Adesão', 'Não Informado']"/>
               </v-flex>
               <v-flex xs12 md4 ml-4>
                 <v-menu lazy  :close-on-content-click="true"  v-model="dateSelector"  transition="scale-transition" offset-y full-width  :nudge-left="40" max-width="290px">

@@ -1,6 +1,7 @@
 <template>
   <v-flex xs12 md10 offset-md1>
-    <ator-edit v-if="this.$store.state.editAtor"></ator-edit>
+    <ator-edit v-if="this.$store.state.editAtor"/>
+    <ator-visu v-if="this.$store.state.visuAtor"/>
     <v-dialog v-model="addAtorModal" persistent max-width="800px">
       <AddAtor @close="addAtorModal = false"/>
     </v-dialog>
@@ -11,8 +12,8 @@
           <v-btn outline @click="downloadPDF(searchedList)" color="primary">
             GERAR PDF
             <v-icon color="primary">description</v-icon>
-          </v-btn>
-          <br>
+          </v-btn> 
+          <br>         
           <v-btn outline @click="addAtorModal = true" color="primary">
             Novo Ator
             <v-icon ml-1 color="primary">add</v-icon>
@@ -69,6 +70,9 @@
           <td class="text-xs-center">{{ props.item.capacitacao }}</td>
           <td class="text-xs-center">{{ props.item.modalidade }}</td>
           <td class="justify-center layout">
+            <v-btn icon title="Ver" @click.native.stop="visuAtor(props.item)">
+                <v-icon>remove_red_eye</v-icon>
+            </v-btn>
             <v-btn icon title="Editar" @click.native.stop="editAtor(props.item)">
                 <v-icon color="success">edit</v-icon>
             </v-btn>
@@ -76,21 +80,6 @@
                 <v-icon color="error">delete</v-icon>
               </v-btn>
           </td>
-          <!--<v-expansion-panel expand popout>
-            <v-expansion-panel-content >
-              <div slot="header">DOC Solicitação</div>
-              <v-card>
-                <v-card-text class="grey lighten-3">{{ props.item.documento_solicitacao }}</v-card-text>
-              </v-card>
-            </v-expansion-panel-content>
-
-            <v-expansion-panel-content>
-              <div slot="header">Observação</div>
-              <v-card>
-                <v-card-text class="grey lighten-3">{{ props.item.observacao }}</v-card-text>
-              </v-card>
-            </v-expansion-panel-content>
-          </v-expansion-panel>-->
         </template>
         <template v-slot:no-data>
           <v-alert :value="true" color="error" icon="warning">
@@ -111,14 +100,15 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import pdfGenerator from '@/getPDF'
+import pdfGenerator from '@/utils/AtorPdf'
 import AddAtor from './AddAtor'
 import AtorEdit from './AtorEdit'
+import AtorVisu from './AtorVisu'
 import DeleteModal from '../DeleteModal'
 
 export default {
   name: 'AtoresTab',
-  components: {AddAtor, AtorEdit, DeleteModal},
+  components: {AddAtor, AtorEdit, AtorVisu, DeleteModal},
   data () {
     return {
       addAtorModal: false,
@@ -134,7 +124,8 @@ export default {
         {text: ''},
         {text: 'Implementado'},
         {text: 'Interessado'},
-        {text: 'Processo de Adesão'}
+        {text: 'Processo de Adesão'},
+        {text: 'Não informado'}
       ],
       headers: [
         {text: 'Nome', align: 'center', sortable: false},
@@ -152,6 +143,10 @@ export default {
     },
     editAtor (ator) {
       this.$store.state.editAtor = true
+      this.$store.state.editModel = ator
+    },
+    visuAtor (ator) {
+      this.$store.state.visuAtor = true
       this.$store.state.editModel = ator
     },
     deleteAtor (ator) {

@@ -7,8 +7,17 @@
     <v-card height="100%">
 
     <v-card-title>
-      REPRESENTANTES
-      <v-spacer></v-spacer>
+      <v-flex center>
+        <v-btn outline @click="downloadPDF" color="primary">
+          GERAR PDF
+          <v-icon color="primary">description</v-icon>
+        </v-btn> 
+        <br>         
+        <v-btn outline disabled color="primary">
+          Novo Representante
+          <v-icon ml-1 color="primary">add</v-icon>
+        </v-btn>
+      </v-flex>
       <v-flex ma-0 xs12 sm6>
         <v-text-field append-icon="search" label="Procurar" single-line hide-details v-model="search"></v-text-field>
       </v-flex>
@@ -25,7 +34,7 @@
               <v-icon color="textPrimary">keyboard_arrow_down</v-icon>
             </template>
             
-            <div slot="header"> 
+            <div slot="header">
               <v-flex left mt-2>
                 {{ props.item.nome }} <!-- Nome dos Atores -->
               </v-flex>
@@ -127,6 +136,7 @@
 <script>
 import { defaults as axiosDefaults } from 'axios'
 import { mapGetters } from 'vuex'
+import pdfGenerator from '@/utils/ReprePdf'
 import AddRepresentante from './AddRepresentante'
 import RepresentanteEdit from './RepresentanteEdit'
 import DeleteModal from '../DeleteModal'
@@ -144,6 +154,9 @@ export default {
     }
   },
   methods: {
+    downloadPDF () {
+      pdfGenerator(this.representanteList)
+    },
     addRepresentante (atorId) {
       this.$refs.addRepresentanteModal.representante.id_ator = `${axiosDefaults.baseURL}ator-list/${atorId}/`
       this.addRepresentanteModal = true
