@@ -17,7 +17,6 @@
         <v-card-text class="pt-0 pb-0">
           <v-container fluid>
             <v-layout row wrap justify-center>
-              
               <v-flex xs12 md3> <!-- todos readonly -->
                 <v-text-field label="Capacitação" v-model="model.capacitacao" :items="['Sim', 'Não', 'Não Informado']" readonly/>
               </v-flex>
@@ -39,9 +38,28 @@
                 <v-textarea label="DOC Solicitação" auto-grow v-model="model.documento_solicitacao" readonly/>
               </v-flex>
 
-              <v-flex xs12 md12 red>
+              <v-flex xs12 md12 v-if="findDoc.length !== 0">
                 <v-list subheader>
-                  <v-subheader>Gestor</v-subheader>
+                  <v-subheader>Documentos: </v-subheader>
+                  <template v-for="item in findDoc">
+                    <v-list-tile :key="item.nome" avatar :href="item.pdf" target="_blank" title="Abrir documento">
+
+                      <v-list-tile-avatar>
+                        <v-icon class="grey textPrimary--text">description</v-icon>
+                      </v-list-tile-avatar>
+
+                      <v-list-tile-content>
+                        <v-list-tile-title>{{ item.arquivo }}</v-list-tile-title>
+                      </v-list-tile-content>
+
+                    </v-list-tile>
+                  </template>
+                </v-list>
+              </v-flex>
+
+              <v-flex xs12 md12 v-if="findGestor.length !== 0">
+                <v-list subheader>
+                  <v-subheader>Gestor: </v-subheader>
                   <template v-for="item in findGestor">
                     <v-list-tile :key="item.nome">
                       <v-list-tile-content>
@@ -52,7 +70,7 @@
                   </template>
                 </v-list>
               </v-flex>
-
+            
             </v-layout>
           </v-container>
         </v-card-text>
@@ -72,6 +90,9 @@ export default {
     }
   },
   methods: {
+    test () {
+      console.log('doc')
+    },
     cancel () {
       this.$store.state.visuAtor = false
     },
@@ -83,7 +104,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({representanteList: 'getRepresentantesList'}),
+    ...mapGetters({representanteList: 'getRepresentantesList', documentList: 'getDocumentacaoList'}),
     findGestor () {
       const gestorList = []
       for (let item in this.representanteList) {
@@ -93,6 +114,16 @@ export default {
         }
       }
       return gestorList
+    },
+    findDoc () {
+      const docList = []
+      for (let item in this.documentList) {
+        let id = this.urlToId(this.documentList[item].ator) // Transformando url do id em int
+        if (id === this.model.id_ator) {
+          docList.push(this.documentList[item])
+        }
+      }
+      return docList
     }
   },
   created () {
