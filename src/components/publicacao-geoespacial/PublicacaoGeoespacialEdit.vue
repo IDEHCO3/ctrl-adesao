@@ -68,10 +68,9 @@
 
 <script>
 import axios from 'axios'
-import { mapGetters } from 'vuex'
 
 export default {
-  name: 'AtorEdit',
+  name: 'publicacaoGeoespacialEdit',
   data () {
     return {
       etag: '',
@@ -91,9 +90,6 @@ export default {
     }
   },
   methods: {
-    test () {
-      return this.atorList
-    },
     cancel () {
       this.$store.state.editPublicacaoGeoespacial = false
       this.$store.commit('clearModel')
@@ -113,9 +109,6 @@ export default {
         this.cancel()
       })
     }
-  },
-  computed: {
-    ...mapGetters({atorList: 'getAtorList'})
   },
   created () {
     this.model = JSON.parse(JSON.stringify(this.$store.state.editModel))

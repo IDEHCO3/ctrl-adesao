@@ -3,15 +3,15 @@ import 'jspdf-autotable'
 
 export default function controleDeAdesaoPDF (list) {
   const doc = new JsPDF()
-  doc.text('Controle de Adesão - lista de Representantes', 70, 15)
+  doc.text('Controle de Adesão - lista de Representantes', 60, 15)
 
   list.map((representate, index) => {
     if (index === 0) {
-      doc.autoTable([{title: representate.id_ator, dataKey: 'atorNome'}], [],
+      doc.autoTable([{title: representate.ator_nome, dataKey: 'atorNome'}], [],
         { headStyles: {fillColor: [0, 0, 0]}, styles: {halign: 'center'}, theme: 'grid', startY: 25 })
       doc.autoTable(getColumns(), getData(representate), { headStyles: {fillColor: [105, 105, 105]}, theme: 'grid', startY: doc.autoTable.previous.finalY })
     } else {
-      doc.autoTable([{title: representate.id_ator, dataKey: 'atorNome'}], [],
+      doc.autoTable([{title: representate.ator_nome, dataKey: 'atorNome'}], [],
         { headStyles: {fillColor: [0, 0, 0]}, styles: {halign: 'center'}, theme: 'grid', startY: doc.autoTable.previous.finalY + 10 })
       doc.autoTable(getColumns(), getData(representate), { headStyles: {fillColor: [105, 105, 105]}, theme: 'grid', startY: doc.autoTable.previous.finalY })
     }

@@ -5,7 +5,7 @@
         <div class="headline">Excluir</div>
       </v-flex>
     </v-card-title>
-    <v-card-text>Tem certeza que quer excluir ?<br>{{ name }}</v-card-text>
+    <v-card-text>Tem certeza que quer excluir <strong>{{ name }}</strong> ?</v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn outline color="success" @click.native="deleteItem">
@@ -35,12 +35,14 @@ export default {
   methods: {
     async deleteItem () {
       await request(this.url, axios.delete)
-      this.$store.dispatch('findAtorList') // fazer if futuramente dependendo do que for deletado
-      this.$store.dispatch('findRepresentanteList')
-      this.$store.dispatch('findPublicacaoGeoespacialList')
-      this.name = ''
-      this.url = ''
-      this.$emit('close')
+        .then(() => { // fazer if futuramente dependendo do que for deletado
+          this.$store.dispatch('findAtorList')
+          this.$store.dispatch('findRepresentanteList')
+          this.$store.dispatch('findPublicacaoGeoespacialList')
+          this.name = ''
+          this.url = ''
+          this.$emit('close')
+        })
     }
   }
 }
