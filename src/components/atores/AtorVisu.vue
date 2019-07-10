@@ -57,10 +57,10 @@
                 </v-list>
               </v-flex>
 
-              <v-flex xs12 md12 v-if="findGestor.length !== 0">
-                <v-list subheader>
+              <v-flex xs12 md12 >
+                <v-list subheader v-if="findGestor.length !== 0">
                   <v-subheader>Gestor: </v-subheader>
-                  <template v-for="item in findGestor">
+                  <template v-for="item in findGestor" >
                     <v-list-tile :key="item.nome">
                       <v-list-tile-content>
                         <v-list-tile-title>{{ item.nome }}</v-list-tile-title>
@@ -68,6 +68,9 @@
                       </v-list-tile-content>
                     </v-list-tile>
                   </template>
+                </v-list>
+                <v-list subheader v-else>
+                  <v-subheader class="justify-center">Gestor: Nenhum gestor cadastrado </v-subheader>
                 </v-list>
               </v-flex>
             

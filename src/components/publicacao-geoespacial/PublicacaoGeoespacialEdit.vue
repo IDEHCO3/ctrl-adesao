@@ -4,7 +4,7 @@
       <v-card class="grey lighten-4 elevation-0">
         <v-card-title class="pa-0 primary">
           <v-flex center class="headline textPrimary--text">
-            {{ model.ator_nome }}
+            {{ model.ator_nome }} 
           </v-flex>
           <v-btn flat icon color="red" @click.native="cancel">
             <v-icon light>cancel</v-icon>
@@ -70,7 +70,7 @@
 import axios from 'axios'
 
 export default {
-  name: 'publicacaoGeoespacialEdit',
+  name: 'pagublicacaoGeoespacialEdit',
   data () {
     return {
       etag: '',
@@ -117,7 +117,8 @@ export default {
     axios.get(`publicacaoinformacaogeoespacial-list/${this.model.id_publicacao_informacao_geoespacial}/`)
       .then(res => {
         this.etag = res.headers.etag
-        this.model = res.data
+        this.model = { ...res.data, ator_nome: `${this.model.ator_nome}` }
+        console.log(this.model)
       })
   }
 }
