@@ -10,12 +10,10 @@ import { mapActions } from 'vuex'
 export default {
   name: 'app',
   methods: {
-    ...mapActions(['findAtorList', 'findRepresentanteList', 'findPublicacaoGeoespacialList'])
+    ...mapActions(['findAllList'])
   },
   created () {
-    this.findAtorList()
-    this.findRepresentanteList()
-    this.findPublicacaoGeoespacialList()
+    this.$store.dispatch('findAllList')
   }
 }
 </script>

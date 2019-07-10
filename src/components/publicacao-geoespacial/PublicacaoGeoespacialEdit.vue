@@ -4,7 +4,7 @@
       <v-card class="grey lighten-4 elevation-0">
         <v-card-title class="pa-0 primary">
           <v-flex center class="headline textPrimary--text">
-            Editar Publicação Geoespacial
+            {{ model.ator_nome }} 
           </v-flex>
           <v-btn flat icon color="red" @click.native="cancel">
             <v-icon light>cancel</v-icon>
@@ -68,10 +68,9 @@
 
 <script>
 import axios from 'axios'
-import { mapGetters } from 'vuex'
 
 export default {
-  name: 'AtorEdit',
+  name: 'pagublicacaoGeoespacialEdit',
   data () {
     return {
       etag: '',
@@ -86,14 +85,11 @@ export default {
       selectOption: [
         'Sim',
         'Não',
-        'Não informado'
+        'Não Informado'
       ]
     }
   },
   methods: {
-    test () {
-      return this.atorList
-    },
     cancel () {
       this.$store.state.editPublicacaoGeoespacial = false
       this.$store.commit('clearModel')
@@ -114,9 +110,6 @@ export default {
       })
     }
   },
-  computed: {
-    ...mapGetters({atorList: 'getAtorList'})
-  },
   created () {
     this.model = JSON.parse(JSON.stringify(this.$store.state.editModel))
   },
@@ -124,7 +117,8 @@ export default {
     axios.get(`publicacaoinformacaogeoespacial-list/${this.model.id_publicacao_informacao_geoespacial}/`)
       .then(res => {
         this.etag = res.headers.etag
-        this.model = res.data
+        this.model = { ...res.data, ator_nome: `${this.model.ator_nome}` }
+        console.log(this.model)
       })
   }
 }

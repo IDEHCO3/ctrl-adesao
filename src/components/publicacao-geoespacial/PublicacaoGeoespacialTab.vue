@@ -11,6 +11,11 @@
     <v-card height="100%">
     <v-card-title>
       <v-flex center>
+        <v-btn outline @click="downloadPDF(searchedList)" color="primary">
+          GERAR PDF
+          <v-icon color="primary">description</v-icon>
+        </v-btn>
+        <br>
         <v-btn outline @click="addPublicacaoModal = true" color="primary">
           Nova Publicação
           <v-icon color="primary">add</v-icon>
@@ -55,10 +60,10 @@
 
     <v-data-table :headers="headers" :items="searchedList"
     :pagination.sync="pagination" hide-actions class="elevation-1"
-    :rows-per-page-items="rows" :custom-sort="sortByNome">
+    :rows-per-page-items="rows" > <!-- :custom-sort="sortByNome" -->
 
       <template slot="items" slot-scope="props">
-        <td class="text-xs-left"> {{ filterNome(props.item.id_ator) }} </td>
+        <td class="text-xs-left"> {{ props.item.ator_nome }} </td>
         <td class="text-xs-center">{{ props.item.tem_metadados }}</td>
         <td class="text-xs-center">{{ props.item.tem_geoservicos }}</td>
         <td class="text-xs-center">{{ props.item.tem_download }}</td>
@@ -87,6 +92,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import pdfGenerator from '@/utils/PublicPdf'
 import AddPublicacaoGeoespacial from './AddPublicacaoGeoespacial.vue'
 import PublicacaogeoespacialEdit from './PublicacaoGeoespacialEdit.vue'
 import DeleteModal from '../DeleteModal'
@@ -109,7 +115,7 @@ export default {
         {text: ''},
         {text: 'Sim'},
         {text: 'Não'},
-        {text: 'Não informado'}
+        {text: 'Não Informado'}
       ],
       headers: [
         {text: 'Nome', align: 'center', sortable: false},
@@ -122,6 +128,9 @@ export default {
     }
   },
   methods: {
+    downloadPDF (list) {
+      pdfGenerator(list)
+    },
     editPublic (publicacao) {
       this.$store.state.editPublicacaoGeoespacial = true
       this.$store.state.editModel = publicacao
@@ -136,13 +145,6 @@ export default {
         return false
       }
     },
-    filterNome (linkedData) {
-      const id = parseInt(linkedData.split('/').reverse()[0])
-      const nome = this.atorList.find(ator => ator.id_ator === id).nome
-      if (nome) {
-        return nome
-      }
-    },
     deletePublic (publicacao) {
       const id = parseInt(publicacao.id_ator.split('/').reverse()[0])
       const nome = this.atorList.find(ator => ator.id_ator === id).nome
@@ -152,8 +154,8 @@ export default {
     },
     sortByNome (items) {
       return items.sort((a, b) => {
-        if (a.nome && b.nome) {
-          return a.nome > b.nome ? 1 : -1
+        if (a.ator_nome && b.ator_nome) {
+          return a.ator_nome > b.ator_nome ? 1 : -1
         } else {
           return 1
         }
@@ -169,7 +171,7 @@ export default {
       filters['geoservicos'] = this.geoservicos === '' ? null : this.geoservicos
       filters['download'] = this.download === '' ? null : this.download
       filters['vinde'] = this.vinde === '' ? null : this.vinde
-      let list = publicacaoGeoespacial.filter(publicacao => this.filterNome(publicacao.id_ator).match(new RegExp(this.search, 'i')))
+      let list = publicacaoGeoespacial.filter(publicacao => publicacao.id_ator.match(new RegExp(this.search, 'i')))
       return list.filter(publicacao =>
         this.filters(publicacao.tem_metadados, filters.metadados) &&
         this.filters(publicacao.tem_geoservicos, filters.geoservicos) &&
