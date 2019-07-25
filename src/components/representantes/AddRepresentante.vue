@@ -94,17 +94,17 @@ export default {
   data () {
     return {
       representante: {
-        nome: '',
-        capacitado: '',
-        email1: '',
-        email2: '',
-        telefone1: '',
-        telefone2: '',
-        celular_telefone3: '',
-        area_setor: '',
-        funcao_cargo: '',
-        id_ator: '',
-        gestor: ''
+        nome: null,
+        capacitado: null,
+        email1: null,
+        email2: null,
+        telefone1: null,
+        telefone2: null,
+        celular_telefone3: null,
+        area_setor: null,
+        funcao_cargo: null,
+        id_ator: null,
+        gestor: null
       },
       rules: {
         required: v => !!v || 'Este campo é obrigatorio'
@@ -127,17 +127,17 @@ export default {
     },
     clearFields () {
       this.representante = {
-        nome: '',
-        capacitado: '',
-        email1: '',
-        email2: '',
-        telefone1: '',
-        telefone2: '',
-        celular_telefone3: '',
-        area_setor: '',
-        funcao_cargo: '',
-        id_ator: '',
-        gestor: ''
+        nome: null,
+        capacitado: null,
+        email1: null,
+        email2: null,
+        telefone1: null,
+        telefone2: null,
+        celular_telefone3: null,
+        area_setor: null,
+        funcao_cargo: null,
+        id_ator: null,
+        gestor: null
       }
     }
   }

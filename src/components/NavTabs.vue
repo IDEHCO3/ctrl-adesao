@@ -1,23 +1,32 @@
 <template>
   <v-app>
+    <v-toolbar dark color="primary" class="elevation-{10}">
+      <v-toolbar-side-icon></v-toolbar-side-icon>
+
+      <v-toolbar-title class="textPrimary--text">
+        Controle de adesão INDE <small> v{{ apiVersion }} </small>
+      </v-toolbar-title>
+
+      <v-spacer></v-spacer>
+
+      <v-btn  icon @click="$router.push('/login')">
+        <v-icon large>account_box</v-icon>
+      </v-btn>
+
+    </v-toolbar>
     <v-tabs
       v-model="tab"
-      color="primary"
+      color="primary  "
       grow
       dark
     >
-      <v-tabs-slider color="warning"/>
+      <v-tabs-slider color="accent"/>
       <v-tab
         v-for="item in tabs"
         :key="item"
       >
         {{ item }}
       </v-tab>
-      <!--
-      <v-btn  icon @click="$router.push('/login')">
-        <v-icon large>account_box</v-icon>
-      </v-btn>
-      -->
     </v-tabs>
     
     <v-tabs-items v-model="tab">
@@ -31,6 +40,8 @@
 </template>
 
 <script>
+import {version} from '@/../package.json'
+
 import AtoresTab from './atores/AtoresTab'
 import PublicacaoGeoespacialTab from './publicacao-geoespacial/PublicacaoGeoespacialTab'
 import RepresentantesTab from './representantes/RepresentantesTab'
@@ -42,6 +53,7 @@ export default {
   },
   data () {
     return {
+      apiVersion: '',
       tab: null,
       tabs: [
         'ATOR',
@@ -49,6 +61,9 @@ export default {
         'PUBLICAÇÃO GEOESPACIAL'
       ]
     }
+  },
+  created () {
+    this.apiVersion = version
   }
 }
 </script>

@@ -1,14 +1,16 @@
 <template>
   <div id="app">
-    <router-view/>
+    <nav-tabs></nav-tabs>
   </div>
 </template>
 
 <script>
+import NavTabs from './components/NavTabs'
 import { mapActions } from 'vuex'
 
 export default {
   name: 'app',
+  components: {NavTabs},
   methods: {
     ...mapActions(['findAllList'])
   },

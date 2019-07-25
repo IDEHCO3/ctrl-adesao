@@ -98,14 +98,14 @@ export default {
     },
     clearFields () {
       this.ator = {
-        nome: '',
-        capacitacao: '',
-        data_oficio: '',
-        documento_solicitacao: '',
-        modalidade: '',
-        no_implementado: '',
-        observacao: '',
-        status_adesao: ''
+        nome: null,
+        capacitacao: null,
+        data_oficio: null,
+        documento_solicitacao: null,
+        modalidade: null,
+        no_implementado: null,
+        observacao: null,
+        status_adesao: null
       }
     }
   }

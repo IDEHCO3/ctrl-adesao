@@ -2,19 +2,19 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import App from './App'
 import axios from 'axios'
-import router from './router'
 import store from './store'
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 import '../node_modules/vuetify/dist/vuetify.min.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
+// theme colors and icon
 Vue.use(Vuetify, {
   iconfont: 'md',
   theme: {
-    primary: '#1976D2',
-    secondary: '#03DAC6',
-    accent: '#82B1FF',
+    primary: '#03a9f4',
+    secondary: '#8e24aa',
+    accent: '#fff',
     error: '#C62828',
     info: '#2196F3',
     success: '#4CAF50',
@@ -34,7 +34,7 @@ axios.defaults.headers.post['Content-Type'] = 'application/json'
 new Vue({
   el: '#app',
   store,
-  router,
   template: '<App/>',
-  components: { App }
+  components: { App },
+  render: h => h(App)
 })
