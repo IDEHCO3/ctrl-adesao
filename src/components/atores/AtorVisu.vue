@@ -50,6 +50,7 @@
 
                       <v-list-tile-content>
                         <v-list-tile-title>{{ item.arquivo }}</v-list-tile-title>
+                        <v-list-tile-sub-title>{{ item.data }}</v-list-tile-sub-title>
                       </v-list-tile-content>
 
                     </v-list-tile>
@@ -93,9 +94,6 @@ export default {
     }
   },
   methods: {
-    test () {
-      console.log('doc')
-    },
     cancel () {
       this.$store.state.visuAtor = false
     },
