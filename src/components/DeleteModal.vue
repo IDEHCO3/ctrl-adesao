@@ -35,7 +35,7 @@ export default {
   methods: {
     async deleteItem () {
       await request(this.url, axios.delete)
-        .then(() => { // fazer if futuramente dependendo do que for deletado
+        .then(() => { // fazer if futuramente dependendo do que for deletado disparar gets diferentes
           this.$store.dispatch('findAtorList')
           this.$store.dispatch('findRepresentanteList')
           this.$store.dispatch('findPublicacaoGeoespacialList')
